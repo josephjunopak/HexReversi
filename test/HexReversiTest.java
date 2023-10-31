@@ -6,7 +6,11 @@ import org.junit.Assert;
 import reversi.model.HexReversi;
 import reversi.model.Reversi;
 import view.ReversiTextualView;
+import view.TextView;
 
+/**
+ * Test class for testing the functionality of the HexReversi model.
+ */
 public class HexReversiTest {
   /**
    * Checks that model sets up board correctly
@@ -40,10 +44,10 @@ public class HexReversiTest {
     Assert.assertTrue(view.toString().contains(
             "   _ _ _ _" + System.lineSeparator() +  "  _ _ _ _ _" + System.lineSeparator()
                     + " _ _ X 0 _ _" + System.lineSeparator()
-                    +"_ _ 0 _ X _ _" + System.lineSeparator()
-                    +" _ _ X 0 _ _" + System.lineSeparator()
-                    +"  _ _ _ _ _" + System.lineSeparator()
-                    +"   _ _ _ _"));
+                    + "_ _ 0 _ X _ _" + System.lineSeparator()
+                    + " _ _ X 0 _ _" + System.lineSeparator()
+                    + "  _ _ _ _ _" + System.lineSeparator()
+                    + "   _ _ _ _"));
   }
 
   /**
@@ -79,7 +83,7 @@ public class HexReversiTest {
     Reversi model = new HexReversi();
 
     Assert.assertThrows(IllegalArgumentException.class,
-            () -> model.startGame(-1));
+        () -> model.startGame(-1));
   }
 
   /**
@@ -91,7 +95,7 @@ public class HexReversiTest {
     Reversi model = new HexReversi();
 
     Assert.assertThrows(IllegalArgumentException.class,
-            () -> model.startGame(1));
+        () -> model.startGame(1));
   }
 
   /**
@@ -134,4 +138,80 @@ public class HexReversiTest {
     Assert.assertTrue("A size 2 game starts with no legal moves.", model.isGameOver());
   }
 
+  @Test
+  public void endNonTrivialGame() {
+    Reversi model = new HexReversi();
+    TextView view = new ReversiTextualView(model);
+    model.startGame(3);
+    model.makeMove(1, 0);
+    model.makeMove(1, 3);
+    model.makeMove(3, 3);
+    model.makeMove(4, 1);
+    model.makeMove(0, 1);
+    model.makeMove(3, 0);
+    Assert.assertTrue(model.isGameOver());
+    String gameEndState = "  _ X _" + System.lineSeparator()
+            + " X X X 0" + System.lineSeparator()
+            + "_ X _ X _" + System.lineSeparator()
+            + " 0 0 0 X" + System.lineSeparator()
+            + "  _ 0 _";
+    Assert.assertTrue(view.toString().contains(gameEndState));
+  }
+
+  @Test
+  public void testBlackMovesFirst() {
+    Reversi model = new HexReversi();
+    model.startGame(6);
+    Assert.assertEquals(Reversi.Player.BLACK, model.getCurrentPlayer());
+  }
+
+  @Test
+  public void testInvalidMoveOnExistingPiece() {
+    Reversi model = new HexReversi();
+    model.startGame(3);
+    Assert.assertThrows(IllegalStateException.class,
+        () -> model.makeMove(1, 1));
+    Assert.assertEquals(Reversi.Player.BLACK, model.getCurrentPlayer());
+  }
+
+  @Test
+  public void testInvalidMoveOutOfBounds() {
+    Reversi model = new HexReversi();
+    model.startGame(3);
+    Assert.assertThrows(IllegalArgumentException.class,
+        () -> model.makeMove(0, 3));
+    Assert.assertThrows(IllegalArgumentException.class,
+        () -> model.makeMove(-1, 3));
+    Assert.assertThrows(IllegalArgumentException.class,
+        () -> model.makeMove(4, 3));
+  }
+
+  @Test
+  public void testInvalidMoveNoPathToSameColor() {
+    Reversi model = new HexReversi();
+    model.startGame(3);
+    Assert.assertThrows(IllegalStateException.class,
+        () -> model.makeMove(0, 0));
+    Assert.assertThrows(IllegalStateException.class,
+        () -> model.makeMove(2, 2));
+    Assert.assertThrows(IllegalStateException.class,
+        () -> model.makeMove(2, 0));
+  }
+
+  @Test
+  public void testFlipMultipleLines() {
+    Reversi model = new HexReversi();
+    model.startGame(4);
+    TextView view = new ReversiTextualView(model);
+    model.makeMove(1, 2);
+    model.makeMove(0, 2);
+    model.makeMove(5, 2);
+    model.makeMove(6, 2);
+    model.makeMove(2, 1);
+    model.makeMove(4, 4);
+    String gameStateSample = " _ X X 0 _ _" + System.lineSeparator()
+            + "_ _ 0 _ 0 _ _" + System.lineSeparator()
+            + " _ _ 0 0 0 _";
+    Assert.assertTrue(view.toString().contains(gameStateSample));
+  }
 }

@@ -4,7 +4,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class HexReversi implements Reversi{
+/**
+ * An implementation that utilizes Reversi interface. This version
+ * uses a hex-shaped board where the size is defined in the startGame() function.
+ * The cells on the board can be located as where the 0th arraylist inside cellGrid is the top row
+ * and the 0th element of an arrayList (row), is the most left cell in that row. The main function
+ * to move pieces is the makeMove(int row, int col) function.
+ *
+ */
+public class HexReversi implements Reversi {
   //0-th arraylist inside cellGrid is the top row
   //0-th element of an arrayList (row), is the most left cell
   List<List<Player>> cellGrid;
@@ -24,9 +32,10 @@ public class HexReversi implements Reversi{
   }
 
   /**
+   * Starts a game of Reversi with a hex-shaped board. Takes in a integer
+   * to specify the length of each side in the board.
    *
    * @param boardSize The length of an edge of the board to set to.
-   *
    * @throws IllegalArgumentException if board size is invalid
    * @throws IllegalStateException if game has already started
    */
@@ -58,7 +67,7 @@ public class HexReversi implements Reversi{
   }
 
   /**
-   * initializes the board with appropriate pieces in starting locations.
+   * Initializes the board with appropriate pieces in starting locations.
    */
   private void initPlayersOnGrid() {
     //Starting from top row going down
@@ -85,6 +94,7 @@ public class HexReversi implements Reversi{
 
   /**
    * Helper method for ensuring coordinates are in-bounds.
+   *
    * @param row the row value of the coordinates
    * @param col the column value of the coordinates
    * @throws IllegalArgumentException if either of the values are out-of-bounds.
@@ -118,13 +128,13 @@ public class HexReversi implements Reversi{
           current_col--;
           break;
         case 1: // up left
-          if (current_row <= this.getBoardHeight()/2) {
+          if (current_row <= this.getBoardHeight() / 2) {
             current_col--;
           }
           current_row--;
           break;
         case 2: // up right
-          if (current_row > this.getBoardHeight()/2) {
+          if (current_row > this.getBoardHeight() / 2) {
             current_col++;
           }
           current_row--;
@@ -133,13 +143,13 @@ public class HexReversi implements Reversi{
           current_col++;
           break;
         case 4: // down right
-          if (current_row < this.getBoardHeight()/2) {
+          if (current_row < this.getBoardHeight() / 2) {
             current_col++;
           }
           current_row++;
           break;
         case 5: // down left
-          if (current_row >= this.getBoardHeight()/2) {
+          if (current_row >= this.getBoardHeight() / 2) {
             current_col--;
           }
           current_row++;
@@ -177,6 +187,16 @@ public class HexReversi implements Reversi{
     return false;
   }
 
+  /**
+   * Helper function for flipping pieces in a direction from the original placement position.
+   *
+   * @param player the player that placed the piece.
+   * @param row the 0-indexed row where the piece was placed
+   * @param col the 0-indexed column where the piece was placed
+   * @param depth the number of pieces needed to be flipped in the direction specified
+   * @param dir the direction on the hex grid to flip pieces in, with 0 indicating directly to the
+   *            left and incrementing clockwise.
+   */
   private void flipPiecesInDirection(Player player, int row, int col, int depth, int dir) {
     int current_row = row;
     int current_col = col;
@@ -186,13 +206,13 @@ public class HexReversi implements Reversi{
           current_col--;
           break;
         case 1: // up left
-          if (current_row <= this.getBoardHeight()/2) {
+          if (current_row <= this.getBoardHeight() / 2) {
             current_col--;
           }
           current_row--;
           break;
         case 2: // up right
-          if (current_row > this.getBoardHeight()/2) {
+          if (current_row > this.getBoardHeight() / 2) {
             current_col++;
           }
           current_row--;
@@ -201,22 +221,32 @@ public class HexReversi implements Reversi{
           current_col++;
           break;
         case 4: // down right
-          if (current_row < this.getBoardHeight()/2) {
+          if (current_row < this.getBoardHeight() / 2) {
             current_col++;
           }
           current_row++;
           break;
         case 5: // down left
-          if (current_row >= this.getBoardHeight()/2) {
+          if (current_row >= this.getBoardHeight() / 2) {
             current_col--;
           }
           current_row++;
+          break;
+        default:
           break;
       }
       this.cellGrid.get(current_row).set(current_col, player);
     }
   }
 
+  /**
+   * Moves a piece to the requested spot based on the row and column for the current player.
+   *
+   * @param row The top-down oriented row where the 0th row is the 1st row.
+   * @param col The left-right oriented column where the 0th col is the left-most cell
+   * @throws IllegalStateException if the game hasn't started yet
+   * @throws IllegalArgumentException if the row or column is invalid
+   */
   @Override
   public void makeMove(int row, int col) throws IllegalArgumentException, IllegalStateException {
     this.verifyGameStarted();
@@ -238,6 +268,12 @@ public class HexReversi implements Reversi{
     this.currentTurn = (this.currentTurn == Player.BLACK) ? Player.WHITE : Player.BLACK;
   }
 
+  /**
+   * Gives the current player turn.
+   *
+   * @return The color representing the current player's turn.
+   * @throws IllegalStateException if the game hasn't started
+   */
   @Override
   public Player getCurrentPlayer() throws IllegalStateException {
     this.verifyGameStarted();
@@ -246,8 +282,9 @@ public class HexReversi implements Reversi{
 
   /**
    * Returns the player occupying the cell or if the cell is empty.
-   * @param row
-   * @param col
+   *
+   * @param row The top-down oriented row where the 0th row is the 1st row.
+   * @param col The left-right oriented column where the 0th col is the left-most cell
    * @return The player in the cell or if the cell is empty at the given coordinates.
    * @throws IllegalStateException if the game hasn't started yet
    * @throws IllegalArgumentException if the row or column is invalid
@@ -264,8 +301,8 @@ public class HexReversi implements Reversi{
   /**
    * Returns whether the cell at the given row and column is empty or not.
    *
-   * @param row
-   * @param col
+   * @param row The top-down oriented row where the 0th row is the 1st row.
+   * @param col The left-right oriented column where the 0th col is the left-most cell
    * @return true if the cell at the given coordinates is empty or false if it is occupied.
    * @throws IllegalStateException if the game hasn't started yet
    * @throws IllegalArgumentException if the row or column is invalid
@@ -310,7 +347,7 @@ public class HexReversi implements Reversi{
     return false;
   }
 
-  /**\
+  /**
    * Gives the number of rows in the board.
    *
    * @return  the number of rows in the cell grid.

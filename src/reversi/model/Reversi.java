@@ -4,6 +4,11 @@ package reversi.model;
  * Represents the primary model interface for playing a game of reversi.
  */
 public interface Reversi {
+  /**
+   * Enum that represents a player's piece in a game of Reversi.
+   * A cell can either be occupied by a BLACK or WHITE piece
+   * OR can be empty specified by EMPTY.
+   */
   public enum Player {
     EMPTY,
     BLACK,
@@ -22,8 +27,8 @@ public interface Reversi {
   /**
    * Moves a piece to the requested spot based on the row and column for the current player.
    *
-   * @param row
-   * @param col
+   * @param row The top-down oriented row where the 0th row is the 1st row.
+   * @param col The left-right oriented col where the 0th col is the left-most cell
    * @throws IllegalStateException if the game hasn't started yet
    * @throws IllegalArgumentException if the row or column is invalid
    */
@@ -32,14 +37,14 @@ public interface Reversi {
   /**
    * Gives the current player turn.
    * @return The color representing the current player's turn.
-   * @throws IllegalStateException if the game hasn't starte
+   * @throws IllegalStateException if the game hasn't started
    */
   Player getCurrentPlayer() throws IllegalStateException;
 
   /**
    * Returns the player occupying the cell or if the cell is empty.
-   * @param row
-   * @param col
+   * @param row The top-down oriented row where the 0th row is the 1st row.
+   * @param col The left-right oriented col where the 0th col is the left-most cell
    * @return The player in the cell or if the cell is empty at the given coordinates.
    * @throws IllegalStateException if the game hasn't started yet
    * @throws IllegalArgumentException if the row or column is invalid
@@ -49,8 +54,8 @@ public interface Reversi {
   /**
    * Returns whether the cell at the given row and column is empty or not.
    *
-   * @param row
-   * @param col
+   * @param row The top-down oriented row where the 0th row is the 1st row.
+   * @param col The left-right oriented col where the 0th col is the left-most cell
    * @return true if the cell at the given coordinates is empty or false if it is occupied.
    * @throws IllegalStateException if the game hasn't started yet
    * @throws IllegalArgumentException if the row or column is invalid

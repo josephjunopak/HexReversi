@@ -2,7 +2,10 @@ package view;
 
 import reversi.model.Reversi;
 
-public class ReversiTextualView {
+/**
+ * A class that helps display a HexReversi game via text.
+ */
+public class ReversiTextualView implements TextView {
   private final Reversi model;
 
   public ReversiTextualView(Reversi model) {
