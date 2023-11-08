@@ -49,7 +49,7 @@ public class HexReversiPanel extends JPanel {
   private void drawReversiBoard(Graphics2D g2d, int size) {
     List<List<ReadonlyReversi.Player>> board = this.model.copyBoard();
 
-    int hexagonX = 100;
+    int hexagonX = 50;
     int hexagonY = 50;
 
     for (List<ReadonlyReversi.Player> cells : board) {
@@ -57,8 +57,8 @@ public class HexReversiPanel extends JPanel {
         drawHexagon(g2d, new Point(hexagonX,hexagonY), 50 / Math.sqrt(3));
         hexagonX += 50;
       }
-      hexagonY += 40;
-      hexagonX = 75;
+      hexagonY += 50;
+      hexagonX = 50;
     }
   }
 
@@ -68,7 +68,9 @@ public class HexReversiPanel extends JPanel {
     super.paintComponent(g);
     Graphics2D g2d = (Graphics2D) g.create();
     Rectangle bounds = this.getBounds();
-    drawReversiBoard(g2d, 100);
+    g2d.transform(transformLogicalToPhysical());
+    //drawReversiBoard(g2d, 100);
+    
   }
 
   /**
@@ -93,5 +95,24 @@ public class HexReversiPanel extends JPanel {
     return new Dimension(40, 40);
   }
 
+  private AffineTransform transformLogicalToPhysical() {
+    AffineTransform ret = new AffineTransform();
+    Dimension preferred = getPreferredLogicalSize();
+    //ret.scale(getWidth() / preferred.getWidth(), getHeight() / preferred.getHeight());
+   //ret.scale(1, -1);
+    ret.scale(1,  Math.sqrt(3));
+    ret.shear(0.5, 0);
+    return ret;
+  }
+//
+//  private AffineTransform transformPhysicalToLogical() {
+//    AffineTransform ret = new AffineTransform();
+//    Dimension preferred = getPreferredLogicalSize();
+//    ret.scale(getWidth() / preferred.getWidth(), getHeight() / preferred.getHeight());
+//    ret.shear(0.5, 0);
+//    ret.scale(1,  Math.sqrt(3));
+//    ret.scale(1, -1);
+//    return ret;
+//  }
 
 }
