@@ -2,17 +2,12 @@ package reversi.view;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 import javax.swing.JPanel;
-import javax.swing.event.MouseInputAdapter;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 
 import reversi.model.ReadonlyReversi;
@@ -22,15 +17,21 @@ public class HexReversiPanel extends JPanel {
 
   private boolean mouseIsDown;
 
+  private static final int CELL_WIDTH = 80;
+
   public HexReversiPanel(ReadonlyReversi model) {
     this.model = Objects.requireNonNull(model);
+//    MouseEventsListener listener = new MouseEventsListener();
+//    this.addMouseListener(listener);
+//    this.addMouseMotionListener(listener)
   }
 
-  private void drawHexagon(Graphics2D g2d, Point2D center, double size) {
+  // size is the length of a side
+  private void drawHexagon(Graphics2D g2d, double centerx, double centery, double size) {
     g2d.setColor(Color.black);
     g2d.setStroke(new BasicStroke(2f));
     AffineTransform oldTransform = g2d.getTransform();
-    g2d.translate(center.getX(), center.getY());
+    g2d.translate(centerx, centery);
     GeneralPath hexagon = new GeneralPath();
     hexagon.moveTo(-1 * Math.sqrt(3) * size / 2, (double) size / -2);
     hexagon.lineTo(-1 * Math.sqrt(3) * size / 2, (double) size / 2);
@@ -47,18 +48,38 @@ public class HexReversiPanel extends JPanel {
   }
 
   private void drawReversiBoard(Graphics2D g2d, int size) {
+    for (int row = 0; row < 10; row++) {
+      int offset = CELL_WIDTH / -2 * (row - 1);
+      for (int col = 0; col < 10; col++) {
+        drawHexagon(g2d, col * CELL_WIDTH + offset,
+                row * (1.5 * CELL_WIDTH / Math.sqrt(3)) + CELL_WIDTH / Math.sqrt(3),
+                CELL_WIDTH / Math.sqrt(3));
+      }
+    }
+  }
+
+  private void drawShearReversiBoard(Graphics2D g2d, int size) {
     List<List<ReadonlyReversi.Player>> board = this.model.copyBoard();
 
-    int hexagonX = 50;
-    int hexagonY = 50;
-
-    for (List<ReadonlyReversi.Player> cells : board) {
-      for (ReadonlyReversi.Player cell : cells) {
-        drawHexagon(g2d, new Point(hexagonX,hexagonY), 50 / Math.sqrt(3));
-        hexagonX += 50;
+    for (int y = 0; y < size; y++) {
+      int x_offset = -1 * CELL_WIDTH * y + (size + 1) * CELL_WIDTH;
+      int y_offset = CELL_WIDTH * y + size * CELL_WIDTH;
+      for (int x = 0; x < this.model.getRowWidth(y); x++) {
+        this.drawLogicalHexagon(g2d,
+                new Point(2 * CELL_WIDTH * x + x_offset,
+                        CELL_WIDTH * x + y_offset),
+                CELL_WIDTH);
       }
-      hexagonY += 50;
-      hexagonX = 50;
+    }
+    for (int y = 0; y <= size; y++) {
+      int x_offset = y * CELL_WIDTH + CELL_WIDTH;
+      int y_offset = 2 * y * CELL_WIDTH + CELL_WIDTH * (2 * size);
+      for (int x = 0; x < this.model.getRowWidth(y + size); x++) {
+        this.drawLogicalHexagon(g2d,
+                new Point(2 * CELL_WIDTH * x + x_offset,
+                        CELL_WIDTH * x + y_offset),
+                CELL_WIDTH);
+      }
     }
   }
 
@@ -74,10 +95,11 @@ public class HexReversiPanel extends JPanel {
     hexagon.lineTo(-1 * size, 0);
     hexagon.lineTo(-1 * size, -1 * size);
     hexagon.closePath();
-    g2d.setColor(Color.black);
-    g2d.draw(hexagon);
     g2d.setColor(Color.gray);
     g2d.fill(hexagon);
+    g2d.setColor(Color.black);
+    g2d.setStroke(new BasicStroke(0.5f));
+    g2d.draw(hexagon);
     g2d.setTransform(oldTransform);
   }
 
@@ -87,13 +109,7 @@ public class HexReversiPanel extends JPanel {
     Graphics2D g2d = (Graphics2D) g.create();
     Rectangle bounds = this.getBounds();
     g2d.transform(transformLogicalToPhysical());
-//    drawReversiBoard(g2d, 100);
-    for (int i = 0; i < 4; i++) {
-      int offset = -10 * i + 50;
-      for (int j = 0; j < 4 + i; j++) {
-        this.drawLogicalHexagon(g2d, new Point(20 * j + offset, 10 * j + 10 * i + 50), 10);
-      }
-    }
+    drawReversiBoard(g2d, this.model.getBoardHeight() / 2);
   }
 
   /**
@@ -115,17 +131,14 @@ public class HexReversiPanel extends JPanel {
    * @return Our preferred *logical* size.
    */
   private Dimension getPreferredLogicalSize() {
-    return new Dimension(200, 200);
+    int size = model.getBoardHeight();
+    return new Dimension(size * CELL_WIDTH,size * CELL_WIDTH);
   }
 
   private AffineTransform transformLogicalToPhysical() {
     AffineTransform ret = new AffineTransform();
     Dimension preferred = getPreferredLogicalSize();
-//    ret.translate(0, getHeight());
     ret.scale(getWidth() / preferred.getWidth(), getHeight() / preferred.getHeight());
-//    ret.scale(1, -1);
-//    ret.scale(Math.sqrt(3) / 2, 1);
-//    ret.shear(0, -0.5);
     return ret;
   }
 //
@@ -138,5 +151,36 @@ public class HexReversiPanel extends JPanel {
 //    ret.scale(1, -1);
 //    return ret;
 //  }
+
+  /*
+  private class MouseEventsListener extends MouseInputAdapter {
+    @Override
+    public void mousePressed(MouseEvent e) {
+      HexReversiPanel.this.mouseIsDown = true;
+      this.mouseDragged(e);
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+      HexReversiPanel.this.mouseIsDown = false;
+      if (HexReversiPanel.this.activeColorGuess != null) {
+        for (ViewFeatures listener : HexReversiPanel.this.featuresListeners) {
+          listener.selectedColor(JHexReversiPanel.this.activeColorGuess);
+        }
+      }
+      HexReversiPanel.this.activeColorGuess = null;
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+      // This point is measured in actual physical pixels
+      Point physicalP = e.getPoint();
+      // For us to figure out which circle it belongs to, we need to transform it
+      // into logical coordinates
+      Point2D logicalP = transformPhysicalToLogical().transform(physicalP, null);
+      // TODO: Figure out whether this location is inside a circle, and if so, which one
+    }
+  }
+   */
 
 }
