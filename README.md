@@ -6,6 +6,8 @@ The model interface, Reversi, allows for almost all applications
 of Reversi including different shapes and sizes for the board. In this version,
 we have implemented a game of HexReversi using the interface.
 
+
+
 ## Quick Start
 Here is a short example of how one might start using this codebase and try testing/playing
 a game of Reversi
@@ -76,3 +78,16 @@ implementation(s) of the view
     - *TextView.java:* The marker interface for a textual implementation
     - *ReversiTextualView.java:* Implementation of the textual view
      that simply displays the current state of the board of Reversi.
+
+## Changes for Part 2
+
+- The ability to create a copy of a board:
+  - In terms of purely implementing the model, we did not see a need to copy the board.
+  We simply created a method that returns a copy of the current state of the board.
+- What is the current score for either player?
+  - Since we did not know how the score was going to be calculated, we did not
+  implement a score method. We implemented the function by simply going over each
+  cell and counting how many cells contain a piece for the player.
+- Can the player move at a specific coordinate
+  - We had this function previously as private but switched it
+  to public knowing that we would have to use it in the controller.

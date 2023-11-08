@@ -1,0 +1,13 @@
+A player interface would need to be able to view the layout of the model and make moves inside the
+model. The interface can also use canPlayerMove() to force passes when necessary.
+
+Therefore, we would have two implementations of the the player interface, one for real human
+user and another for a simple AI player. Our design would likely be passing two player interfaces
+to the controller to determine if the game will consist of person vs person, person vs computer,
+or computer vs computer (fully automated).
+
+The interface method definitions will be mainly focused on a real person implementation
+where we can simple create private helper methods in the computer implementation to determine
+what arguments to use. There would probably also be another method where a player would provide
+some type of input to determine the move to make, and the AI would automatically choose a move by
+looking at the board or some other method.

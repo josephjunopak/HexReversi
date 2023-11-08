@@ -5,8 +5,8 @@ import org.junit.Assert;
 
 import reversi.model.HexReversi;
 import reversi.model.Reversi;
-import view.ReversiTextualView;
-import view.TextView;
+import reversi.view.ReversiTextualView;
+import reversi.view.TextView;
 
 /**
  * Test class for testing the functionality of the HexReversi model.
@@ -213,5 +213,16 @@ public class HexReversiTest {
             + "_ _ 0 _ 0 _ _" + System.lineSeparator()
             + " _ _ 0 0 0 _";
     Assert.assertTrue(view.toString().contains(gameStateSample));
+  }
+
+  @Test
+  public void testPassTurnEndsGame() {
+    Reversi model = new HexReversi();
+    model.startGame(4);
+    model.passTurn();
+    Assert.assertEquals(model.getCurrentPlayer(), Reversi.Player.WHITE);
+    model.passTurn();
+    Assert.assertEquals(model.getCurrentPlayer(), Reversi.Player.BLACK);
+    Assert.assertTrue(model.isGameOver());
   }
 }

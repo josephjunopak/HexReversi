@@ -13,16 +13,30 @@ import java.util.List;
  *
  */
 public class HexReversi implements Reversi {
+  /**
+   * For this implementation, we decided to use a 2-D array
+   * to represent the cells in our grid. We did not see a better
+   * way of representing the cells using any other data structure.
+   * We considered keeping track of cell coordinates with 3 dimensions, 1 for each line along the
+   * hex grid, but quickly tossed the idea due to it being difficult to maintain and keep
+   * consistent with itself. Also, although the shape of the board is a hexagon,
+   * traversing through the grid using the ideas of rows and column was easy since it followed
+   * a consistent pattern.
+   */
   //0-th arraylist inside cellGrid is the top row
   //0-th element of an arrayList (row), is the most left cell
   List<List<Player>> cellGrid;
   
-  //True is game is started
-  //False is game not yet started
+  // True is game is started
+  // False is game not yet started
   boolean gameStarted;
   
-  //States which player's turn it is
+  // States which player's turn it is
+  /** invariant * : currentTurn is never EMPTY. */
   Player currentTurn;
+
+  // true if the last player passed their turn.
+  int consecutivePasses;
 
   /**
    * Constructor for HexReversi.
@@ -32,8 +46,11 @@ public class HexReversi implements Reversi {
   }
 
   /**
-   * Starts a game of Reversi with a hex-shaped board. Takes in a integer
+   * Starts a game of Reversi with a hex-shaped board. Takes in an integer
    * to specify the length of each side in the board.
+   * The invariant that the currentPlayer is not EMPTY is maintained because currentTurn is
+   * initialized to BLACK when startGame() is called. An exception is thrown when any other method
+   * is called before startGame().
    *
    * @param boardSize The length of an edge of the board to set to.
    * @throws IllegalArgumentException if board size is invalid
@@ -58,12 +75,20 @@ public class HexReversi implements Reversi {
     }
 
     this.gameStarted = true;
+    this.consecutivePasses = 0;
 
     //Initialize players on grid
     initPlayersOnGrid();
 
     //Black player moves first
     this.currentTurn = Player.BLACK;
+  }
+
+  @Override
+  public List<List<Player>> copyBoard() {
+    this.verifyGameStarted();
+
+    return new ArrayList<>(cellGrid);
   }
 
   /**
@@ -110,6 +135,7 @@ public class HexReversi implements Reversi {
 
   /**
    * Gives the depth of the next piece of the same color of the player in a certain direction.
+   *
    * @param player  The color of the pieces being checked for.
    * @param row     the row where the piece would be placed
    * @param col     the column where the piece would be placed
@@ -241,16 +267,24 @@ public class HexReversi implements Reversi {
 
   /**
    * Moves a piece to the requested spot based on the row and column for the current player.
+   * The invariant that the currentPlayer is not EMPTY is maintained because it can only be set to
+   * either BLACK or WHITE in this method.
    *
    * @param row The top-down oriented row where the 0th row is the 1st row.
    * @param col The left-right oriented column where the 0th col is the left-most cell
    * @throws IllegalStateException if the game hasn't started yet
    * @throws IllegalArgumentException if the row or column is invalid
+   * @throws IllegalStateException if there have already been two consecutive passes
+   *                               (the game already ended)
    */
   @Override
   public void makeMove(int row, int col) throws IllegalArgumentException, IllegalStateException {
     this.verifyGameStarted();
     this.verifyCoordinates(row, col);
+
+    if (this.consecutivePasses >= 2) {
+      throw new IllegalStateException("Game has ended");
+    }
 
     if (!isMoveLegal(this.currentTurn, row, col)) {
       throw new IllegalStateException("Move is not allowed");
@@ -266,6 +300,7 @@ public class HexReversi implements Reversi {
     }
 
     this.currentTurn = (this.currentTurn == Player.BLACK) ? Player.WHITE : Player.BLACK;
+    this.consecutivePasses = 0;
   }
 
   /**
@@ -324,7 +359,8 @@ public class HexReversi implements Reversi {
    */
   @Override
   public boolean isGameOver() throws IllegalStateException {
-    return !(canPlayerMove(Player.BLACK) || canPlayerMove(Player.WHITE));
+    return !(canPlayerMove(Player.BLACK) || canPlayerMove(Player.WHITE))
+            || this.consecutivePasses >= 2;
   }
 
   /**
@@ -374,14 +410,41 @@ public class HexReversi implements Reversi {
     return this.cellGrid.get(row).size();
   }
 
+  @Override
+  public int getPlayerScore(Player player) throws IllegalArgumentException, IllegalStateException {
+    this.verifyGameStarted();
+    if (player == null || player == Player.EMPTY) {
+      throw new IllegalArgumentException("Invalid player given.");
+    }
+
+    int score = 0;
+    for (List<Player> tiles : this.cellGrid) {
+      for (Player value : tiles) {
+        if (value == player) {
+          score += 1;
+        }
+      }
+    }
+
+    return score;
+  }
+
   /**
    * Passes the current players turn to the other player.
+   * The invariant that the currentPlayer is not EMPTY is maintained because it can only be set to
+   * either BLACK or WHITE in this method.
    *
    * @throws IllegalStateException if the game hasn't started yet
+   * @throws IllegalStateException if there have already been two consecutive passes.
    */
   @Override
   public void passTurn() throws IllegalStateException {
     this.verifyGameStarted();
+
+    if (this.consecutivePasses >= 2) {
+      throw new IllegalStateException("Game is already over");
+    }
     this.currentTurn = (this.currentTurn == Player.BLACK) ? Player.WHITE : Player.BLACK;
+    this.consecutivePasses += 1;
   }
 }

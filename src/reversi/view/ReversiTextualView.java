@@ -1,4 +1,4 @@
-package view;
+package reversi.view;
 
 import reversi.model.Reversi;
 

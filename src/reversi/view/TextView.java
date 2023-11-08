@@ -1,4 +1,4 @@
-package view;
+package reversi.view;
 
 /**
  * Marker interface for text-based view of Reversi.
