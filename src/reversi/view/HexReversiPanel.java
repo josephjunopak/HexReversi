@@ -62,6 +62,24 @@ public class HexReversiPanel extends JPanel {
     }
   }
 
+  private void drawLogicalHexagon(Graphics2D g2d, Point2D center, double size) {
+    GeneralPath hexagon = new GeneralPath();
+    AffineTransform oldTransform = g2d.getTransform();
+    g2d.translate(center.getX(), center.getY());
+    hexagon.moveTo(0, -1 * size);
+    hexagon.lineTo(size, 0);
+    hexagon.lineTo(size, 0);
+    hexagon.lineTo(size, size);
+    hexagon.lineTo(0, size);
+    hexagon.lineTo(-1 * size, 0);
+    hexagon.lineTo(-1 * size, -1 * size);
+    hexagon.closePath();
+    g2d.setColor(Color.black);
+    g2d.draw(hexagon);
+    g2d.setColor(Color.gray);
+    g2d.fill(hexagon);
+    g2d.setTransform(oldTransform);
+  }
 
   @Override
   protected void paintComponent(Graphics g) {
@@ -69,8 +87,13 @@ public class HexReversiPanel extends JPanel {
     Graphics2D g2d = (Graphics2D) g.create();
     Rectangle bounds = this.getBounds();
     g2d.transform(transformLogicalToPhysical());
-    //drawReversiBoard(g2d, 100);
-    
+//    drawReversiBoard(g2d, 100);
+    for (int i = 0; i < 4; i++) {
+      int offset = -10 * i + 50;
+      for (int j = 0; j < 4 + i; j++) {
+        this.drawLogicalHexagon(g2d, new Point(20 * j + offset, 10 * j + 10 * i + 50), 10);
+      }
+    }
   }
 
   /**
@@ -92,16 +115,17 @@ public class HexReversiPanel extends JPanel {
    * @return Our preferred *logical* size.
    */
   private Dimension getPreferredLogicalSize() {
-    return new Dimension(40, 40);
+    return new Dimension(200, 200);
   }
 
   private AffineTransform transformLogicalToPhysical() {
     AffineTransform ret = new AffineTransform();
     Dimension preferred = getPreferredLogicalSize();
-    //ret.scale(getWidth() / preferred.getWidth(), getHeight() / preferred.getHeight());
-   //ret.scale(1, -1);
-    ret.scale(1,  Math.sqrt(3));
-    ret.shear(0.5, 0);
+//    ret.translate(0, getHeight());
+    ret.scale(getWidth() / preferred.getWidth(), getHeight() / preferred.getHeight());
+//    ret.scale(1, -1);
+//    ret.scale(Math.sqrt(3) / 2, 1);
+//    ret.shear(0, -0.5);
     return ret;
   }
 //
