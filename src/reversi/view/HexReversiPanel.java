@@ -1,12 +1,10 @@
 package reversi.view;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 import javax.swing.JPanel;
@@ -16,13 +14,18 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 
+import reversi.model.Coord;
+import reversi.model.Player;
 import reversi.model.ReadonlyReversi;
 
-public class HexReversiPanel extends JPanel {
+public class HexReversiPanel extends JPanel{
   private final ReadonlyReversi model;
 
   private boolean mouseIsDown;
   private final int boardSize;
+
+  // tracks the indices of the selected cell with where x is column, y is row as integers.
+  private Coord selectedCell;
 
   private static final double CELL_WIDTH = 20;
   private static final double CELL_HEIGHT = CELL_WIDTH * 2 / Math.sqrt(3);
@@ -30,30 +33,36 @@ public class HexReversiPanel extends JPanel {
   public HexReversiPanel(ReadonlyReversi model) {
     this.model = Objects.requireNonNull(model);
     this.boardSize = (this.model.getBoardHeight() + 1) / 2;
+    MouseEventsListener listener = new MouseEventsListener();
+    this.addMouseListener(listener);
+    this.addMouseMotionListener(listener);
+    this.setFocusable(true); // make the panel focusable
+    KeyEventsListener keyListener = new KeyEventsListener();
+    this.addKeyListener(keyListener);
   }
 
-  private void drawHexagon(Graphics2D g2d, Point2D center, double size) {
+  private void drawHexagon(Graphics2D g2d, Point2D center, double size, Color fill) {
     g2d.setColor(Color.black);
     g2d.setStroke(new BasicStroke(2f));
     AffineTransform oldTransform = g2d.getTransform();
     g2d.translate(center.getX(), center.getY());
     GeneralPath hexagon = new GeneralPath();
-    hexagon.moveTo(-1 * Math.sqrt(3) * size / 2, (double) size / -2);
-    hexagon.lineTo(-1 * Math.sqrt(3) * size / 2, (double) size / 2);
+    hexagon.moveTo(-1 * Math.sqrt(3) * size / 2, size / -2);
+    hexagon.lineTo(-1 * Math.sqrt(3) * size / 2, size / 2);
     hexagon.lineTo(0, size);
-    hexagon.lineTo(Math.sqrt(3) * size / 2, (double) size / 2);
-    hexagon.lineTo(Math.sqrt(3) * size / 2, - (double) size / 2);
+    hexagon.lineTo(Math.sqrt(3) * size / 2, size / 2);
+    hexagon.lineTo(Math.sqrt(3) * size / 2, size / -2);
     hexagon.lineTo(0, -1 * size);
-    hexagon.lineTo(-1 * Math.sqrt(3) * size / 2, (double) size / -2);
+    hexagon.lineTo(-1 * Math.sqrt(3) * size / 2,  size / -2);
     hexagon.closePath();
     g2d.draw(hexagon);
-    g2d.setColor(Color.gray);
+    g2d.setColor(fill);
     g2d.fill(hexagon);
     g2d.setTransform(oldTransform);
   }
 
-  private void drawPlayer(Graphics2D g2d, Point2D center, ReadonlyReversi.Player player) {
-    if (player == ReadonlyReversi.Player.BLACK) {
+  private void drawPlayer(Graphics2D g2d, Point2D center, Player player) {
+    if (player == Player.BLACK) {
       g2d.setColor(Color.black);
     }
     else {
@@ -73,10 +82,15 @@ public class HexReversiPanel extends JPanel {
   private void drawReversiBoard(Graphics2D g2d) {
     for (int row = 0; row < this.model.getBoardHeight(); row++) {
       for (int col = 0; col < this.model.getRowWidth(row); col++) {
-        this.drawHexagon(g2d, this.convertIndexToCoords(row, col), CELL_HEIGHT / 2);
-        ReadonlyReversi.Player cell =  this.model.getPlayerAtCell(row, col);
-        if (cell != ReadonlyReversi.Player.EMPTY) {
-          this.drawPlayer(g2d, this.convertIndexToCoords(row, col), cell);
+        Point2D center = this.convertIndexToCoords(Coord.coordAt(row, col));
+        this.drawHexagon(g2d, center, CELL_HEIGHT / 2, Color.gray);
+        Player cell =  this.model.getPlayerAtCell(Coord.coordAt(row, col));
+        if (cell != Player.EMPTY) {
+          this.drawPlayer(g2d, center, cell);
+        }
+        else if (this.selectedCell != null &&
+                this.selectedCell.col == col && this.selectedCell.row == row) {
+          this.drawHexagon(g2d, center, CELL_HEIGHT / 2, Color.cyan);
         }
       }
     }
@@ -127,17 +141,81 @@ public class HexReversiPanel extends JPanel {
     return ret;
   }
 
-  private Point2D convertIndexToCoords(int row, int col) {
-    double x_offset = (Math.abs(row - this.boardSize + 1) + 1) * CELL_WIDTH / 2;
-    return new Point2D.Double(col * CELL_WIDTH + x_offset,
-    row * CELL_HEIGHT * 3 / 4 + CELL_HEIGHT / 2);
+  private Point2D convertIndexToCoords(Coord coords) {
+    double x_offset = (Math.abs(coords.row - this.boardSize + 1) + 1) * CELL_WIDTH / 2;
+    return new Point2D.Double(coords.col * CELL_WIDTH + x_offset,
+            coords.row * CELL_HEIGHT * 3 / 4 + CELL_HEIGHT / 2);
   }
 
-  private Point2D convertCoordsToIndex(double x, double y) {
-    int row = (int) Math.round((y - CELL_HEIGHT / 2) * 4 / (CELL_HEIGHT * 3));
+  private Coord convertCoordsToIndex(Point2D point) {
+    int row = (int) Math.round((point.getY() - CELL_HEIGHT / 2) * 4 / (CELL_HEIGHT * 3));
     double x_offset = (Math.abs(row - this.boardSize + 1) + 1) * CELL_WIDTH / 2;
-    int col = (int) Math.round((x - x_offset) / CELL_WIDTH);
-    return new Point(row, col);
+    int col = (int) Math.round((point.getX() - x_offset) / CELL_WIDTH);
+    return Coord.coordAt(row, col);
   }
+
+  private boolean isCellValid(Coord cell_index) {
+    if (cell_index.row < 0 || cell_index.row >= this.model.getBoardHeight()) {
+      return false;
+    }
+    return cell_index.col >= 0 && cell_index.col < this.model.getRowWidth(cell_index.row);
+  }
+
+  private class KeyEventsListener implements KeyListener {
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+      int keyCode = e.getKeyCode();
+      if (keyCode == KeyEvent.VK_ENTER) {
+        Player player = HexReversiPanel.this.model.getCurrentPlayer();
+        if (selectedCell != null) {
+          System.out.println(player + " moves to " + selectedCell);
+        }
+        else {
+          System.out.println("Please select a cell");
+        }
+      }
+      if (keyCode == KeyEvent.VK_P) {
+        Player player = HexReversiPanel.this.model.getCurrentPlayer();
+        System.out.println(player + " passes");
+      }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
+  }
+
+  private class MouseEventsListener extends MouseInputAdapter {
+    @Override
+    public void mousePressed(MouseEvent e) {
+      HexReversiPanel.this.mouseIsDown = true;
+
+      Point physicalPoint = e.getPoint();
+
+      Coord cell_indices = HexReversiPanel.this.convertCoordsToIndex(
+              transformPhysicalToLogical().transform(physicalPoint, null));
+      if (cell_indices.equals(HexReversiPanel.this.selectedCell)
+              || !HexReversiPanel.this.isCellValid(cell_indices)) {
+        selectedCell = null;
+      }
+      else {
+        selectedCell = cell_indices;
+      }
+
+      System.out.println("Coordinates of cell:" + HexReversiPanel.this.selectedCell);
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+      HexReversiPanel.this.mouseIsDown = false;
+      HexReversiPanel.this.repaint();
+    }
+  }
+
 
 }

@@ -17,12 +17,11 @@ public interface Reversi extends ReadonlyReversi {
   /**
    * Moves a piece to the requested spot based on the row and column for the current player.
    *
-   * @param row The top-down oriented row where the 0th row is the 1st row.
-   * @param col The left-right oriented col where the 0th col is the left-most cell
+   * @param coord The coordinates containing information of the row and col.
    * @throws IllegalStateException if the game hasn't started yet
    * @throws IllegalArgumentException if the row or column is invalid
    */
-  void makeMove(int row, int col) throws IllegalArgumentException, IllegalStateException;
+  void makeMove(Coord coord) throws IllegalArgumentException, IllegalStateException;
 
   /**
    * Passes the current players turn to the other player.

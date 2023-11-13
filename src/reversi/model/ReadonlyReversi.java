@@ -8,11 +8,7 @@ public interface ReadonlyReversi {
    * A cell can either be occupied by a BLACK or WHITE piece
    * OR can be empty specified by EMPTY.
    */
-  public enum Player {
-    EMPTY,
-    BLACK,
-    WHITE
-  }
+
 
   /**
    * Gives the current player turn.
@@ -23,24 +19,22 @@ public interface ReadonlyReversi {
 
   /**
    * Returns the player occupying the cell or if the cell is empty.
-   * @param row The top-down oriented row where the 0th row is the 1st row.
-   * @param col The left-right oriented col where the 0th col is the left-most cell
+   * @param coord The coordinates containing information of the row and col.
    * @return The player in the cell or if the cell is empty at the given coordinates.
    * @throws IllegalStateException if the game hasn't started yet
    * @throws IllegalArgumentException if the row or column is invalid
    */
-  Player getPlayerAtCell(int row, int col) throws IllegalArgumentException, IllegalStateException;
+  Player getPlayerAtCell(Coord coord) throws IllegalArgumentException, IllegalStateException;
 
   /**
    * Returns whether the cell at the given row and column is empty or not.
    *
-   * @param row The top-down oriented row where the 0th row is the 1st row.
-   * @param col The left-right oriented col where the 0th col is the left-most cell
+   * @param coord The coordinates containing information of the row and col.
    * @return true if the cell at the given coordinates is empty or false if it is occupied.
    * @throws IllegalStateException if the game hasn't started yet
    * @throws IllegalArgumentException if the row or column is invalid
    */
-  boolean isCellEmpty(int row, int col) throws IllegalArgumentException, IllegalStateException;
+  boolean isCellEmpty(Coord coord) throws IllegalArgumentException, IllegalStateException;
 
   /**
    * Signals if the game is over if there are no more moves to make.
