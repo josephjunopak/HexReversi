@@ -1,6 +1,7 @@
 package reversi.view;
 
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,10 +22,10 @@ public class HexReversiPanel extends JPanel {
   private final ReadonlyReversi model;
 
   private boolean mouseIsDown;
-  private int boardSize;
+  private final int boardSize;
 
-  private static double CELL_WIDTH = 20;
-  private static double CELL_HEIGHT = CELL_WIDTH * 2 / Math.sqrt(3);
+  private static final double CELL_WIDTH = 20;
+  private static final double CELL_HEIGHT = CELL_WIDTH * 2 / Math.sqrt(3);
 
   public HexReversiPanel(ReadonlyReversi model) {
     this.model = Objects.requireNonNull(model);
@@ -51,19 +52,33 @@ public class HexReversiPanel extends JPanel {
     g2d.setTransform(oldTransform);
   }
 
-  private void drawReversiBoard(Graphics2D g2d, int size) {
-    List<List<ReadonlyReversi.Player>> board = this.model.copyBoard();
+  private void drawPlayer(Graphics2D g2d, Point2D center, ReadonlyReversi.Player player) {
+    if (player == ReadonlyReversi.Player.BLACK) {
+      g2d.setColor(Color.black);
+    }
+    else {
+      g2d.setColor(Color.white);
+    }
+    AffineTransform oldTransform = g2d.getTransform();
+    g2d.translate(center.getX(), center.getY());
+    Shape circle = new Ellipse2D.Double(
+            -CELL_WIDTH / 4,     // left
+            -CELL_WIDTH / 4,     // top
+            2 * CELL_WIDTH / 4,  // width
+            2 * CELL_WIDTH / 4); // height
+    g2d.fill(circle);
+    g2d.setTransform(oldTransform);
+  }
 
-    int hexagonX = 50;
-    int hexagonY = 50;
-
-    for (List<ReadonlyReversi.Player> cells : board) {
-      for (ReadonlyReversi.Player cell : cells) {
-        drawHexagon(g2d, new Point(hexagonX,hexagonY), 50 / Math.sqrt(3));
-        hexagonX += 50;
+  private void drawReversiBoard(Graphics2D g2d) {
+    for (int row = 0; row < this.model.getBoardHeight(); row++) {
+      for (int col = 0; col < this.model.getRowWidth(row); col++) {
+        this.drawHexagon(g2d, this.convertIndexToCoords(row, col), CELL_HEIGHT / 2);
+        ReadonlyReversi.Player cell =  this.model.getPlayerAtCell(row, col);
+        if (cell != ReadonlyReversi.Player.EMPTY) {
+          this.drawPlayer(g2d, this.convertIndexToCoords(row, col), cell);
+        }
       }
-      hexagonY += 50;
-      hexagonX = 50;
     }
   }
 
@@ -71,14 +86,8 @@ public class HexReversiPanel extends JPanel {
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2d = (Graphics2D) g.create();
-    Rectangle bounds = this.getBounds();
     g2d.transform(transformLogicalToPhysical());
-//    drawReversiBoard(g2d, 100);
-    for (int row = 0; row < this.model.getBoardHeight(); row++) {
-      for (int col = 0; col < this.model.getRowWidth(row); col++) {
-        this.drawHexagon(g2d, this.convertIndexToCoords(row, col), CELL_HEIGHT / 2);
-      }
-    }
+    drawReversiBoard(g2d);
   }
 
   /**
@@ -110,16 +119,13 @@ public class HexReversiPanel extends JPanel {
     ret.scale(getWidth() / preferred.getWidth(), getHeight() / preferred.getHeight());
     return ret;
   }
-//
-//  private AffineTransform transformPhysicalToLogical() {
-//    AffineTransform ret = new AffineTransform();
-//    Dimension preferred = getPreferredLogicalSize();
-//    ret.scale(getWidth() / preferred.getWidth(), getHeight() / preferred.getHeight());
-//    ret.shear(0.5, 0);
-//    ret.scale(1,  Math.sqrt(3));
-//    ret.scale(1, -1);
-//    return ret;
-//  }
+
+  private AffineTransform transformPhysicalToLogical() {
+    AffineTransform ret = new AffineTransform();
+    Dimension preferred = getPreferredLogicalSize();
+    ret.scale(preferred.getWidth()/ getWidth(), preferred.getHeight() / getHeight());
+    return ret;
+  }
 
   private Point2D convertIndexToCoords(int row, int col) {
     double x_offset = (Math.abs(row - this.boardSize + 1) + 1) * CELL_WIDTH / 2;
@@ -128,8 +134,10 @@ public class HexReversiPanel extends JPanel {
   }
 
   private Point2D convertCoordsToIndex(double x, double y) {
-    //TODO
-    return new Point();
+    int row = (int) Math.round((y - CELL_HEIGHT / 2) * 4 / (CELL_HEIGHT * 3));
+    double x_offset = (Math.abs(row - this.boardSize + 1) + 1) * CELL_WIDTH / 2;
+    int col = (int) Math.round((x - x_offset) / CELL_WIDTH);
+    return new Point(row, col);
   }
 
 }
