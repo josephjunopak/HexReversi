@@ -1,5 +1,7 @@
 package reversi.view;
 
+import reversi.model.Coord;
+import reversi.model.Player;
 import reversi.model.Reversi;
 
 /**
@@ -26,11 +28,11 @@ public class ReversiTextualView implements TextView {
       text.append(oneSpace.repeat(model.getBoardHeight()
               - this.model.getRowWidth(row)));
       for (int col = 0; col < this.model.getRowWidth(row); col++) {
-        Reversi.Player player = this.model.getPlayerAtCell(row,col);
+        Player player = this.model.getPlayerAtCell(Coord.coordAt(row, col));
 
-        if (player == Reversi.Player.WHITE) {
+        if (player == Player.WHITE) {
           text.append(whitePlayer);
-        } else if (player == Reversi.Player.BLACK) {
+        } else if (player == Player.BLACK) {
           text.append(blackPlayer);
         } else {
           text.append(underscore);

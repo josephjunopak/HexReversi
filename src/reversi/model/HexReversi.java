@@ -25,18 +25,18 @@ public class HexReversi implements Reversi {
    */
   //0-th arraylist inside cellGrid is the top row
   //0-th element of an arrayList (row), is the most left cell
-  List<List<Player>> cellGrid;
+    private List<List<Player>> cellGrid;
   
   // True is game is started
   // False is game not yet started
-  boolean gameStarted;
+  private boolean gameStarted;
   
   // States which player's turn it is
   /** invariant * : currentTurn is never EMPTY. */
-  Player currentTurn;
+  private Player currentTurn;
 
   // true if the last player passed their turn.
-  int consecutivePasses;
+  private int consecutivePasses;
 
   /**
    * Constructor for HexReversi.
@@ -144,10 +144,10 @@ public class HexReversi implements Reversi {
    * @return  the depth of the next piece of the same color, or -1 if there is a gap or no piece of
    *          the same color.
    */
-  private int samePieceInDirection(Player player, int row, int col, int dir) {
+  private int samePieceInDirection(Player player, Coord coord, int dir) {
     int depth = 1;
-    int current_row = row;
-    int current_col = col;
+    int current_row = coord.row;
+    int current_col = coord.col;
     while (depth < this.getBoardHeight()) {
       switch (dir) {
         case 0: // left
@@ -185,7 +185,7 @@ public class HexReversi implements Reversi {
       }
       Player player_at_cell;
       try {
-        player_at_cell = this.getPlayerAtCell(current_row, current_col);
+        player_at_cell = this.getPlayerAtCell(Coord.coordAt(current_row, current_col));
       }
       catch (IllegalArgumentException e) {
         return -1;
@@ -201,8 +201,8 @@ public class HexReversi implements Reversi {
     return -1;
   }
 
-  private boolean isMoveLegal(Player player, int row, int col) {
-    if (!this.isCellEmpty(row, col)) {
+  public boolean isMoveLegal(Player player, Coord coord) {
+    if (!this.isCellEmpty(coord)) {
       return false;
     }
     for (int dir = 0; dir < 6; dir++) {
@@ -217,15 +217,14 @@ public class HexReversi implements Reversi {
    * Helper function for flipping pieces in a direction from the original placement position.
    *
    * @param player the player that placed the piece.
-   * @param row the 0-indexed row where the piece was placed
-   * @param col the 0-indexed column where the piece was placed
-   * @param depth the number of pieces needed to be flipped in the direction specified
-   * @param dir the direction on the hex grid to flip pieces in, with 0 indicating directly to the
-   *            left and incrementing clockwise.
+   * @param coord  the coordinates containing information of the row and col
+   * @param depth  the number of pieces needed to be flipped in the direction specified
+   * @param dir    the direction on the hex grid to flip pieces in, with 0 indicating directly to the
+   *               left and incrementing clockwise.
    */
-  private void flipPiecesInDirection(Player player, int row, int col, int depth, int dir) {
-    int current_row = row;
-    int current_col = col;
+  private void flipPiecesInDirection(Player player, Coord coord, int depth, int dir) {
+    int current_row = coord.row;
+    int current_col = coord.col;
     while (depth-- > 0) {
       switch (dir) {
         case 0: // left
@@ -278,7 +277,7 @@ public class HexReversi implements Reversi {
    *                               (the game already ended)
    */
   @Override
-  public void makeMove(int row, int col) throws IllegalArgumentException, IllegalStateException {
+  public void makeMove(Coord coord) throws IllegalArgumentException, IllegalStateException {
     this.verifyGameStarted();
     this.verifyCoordinates(row, col);
 
@@ -325,30 +324,32 @@ public class HexReversi implements Reversi {
    * @throws IllegalArgumentException if the row or column is invalid
    */
   @Override
-  public Player getPlayerAtCell(int row, int col)
+  public Player getPlayerAtCell(Coord coord)
           throws IllegalArgumentException, IllegalStateException {
     this.verifyGameStarted();
-    this.verifyCoordinates(row, col);
+    this.verifyCoordinates(coord);
 
-    return this.cellGrid.get(row).get(col);
+    return this.cellGrid.get(coord.row).get(coord.col);
   }
 
   /**
    * Returns whether the cell at the given row and column is empty or not.
    *
-   * @param row The top-down oriented row where the 0th row is the 1st row.
-   * @param col The left-right oriented column where the 0th col is the left-most cell
+   * @param coord   The coordinates containing information of the row and col.
+   *                The row is the top-down oriented row the 0th row is the 1st row.
+   *                The col is the left-right oriented column
+   *                where the 0th col is the left-most cell.
    * @return true if the cell at the given coordinates is empty or false if it is occupied.
    * @throws IllegalStateException if the game hasn't started yet
    * @throws IllegalArgumentException if the row or column is invalid
    */
   @Override
-  public boolean isCellEmpty(int row, int col)
+  public boolean isCellEmpty(Coord coord)
           throws IllegalArgumentException, IllegalStateException {
     this.verifyGameStarted();
-    this.verifyCoordinates(row, col);
+    this.verifyCoordinates(coord);
 
-    return getPlayerAtCell(row, col) == Player.EMPTY;
+    return getPlayerAtCell(coord) == Player.EMPTY;
   }
 
   /**
@@ -375,7 +376,7 @@ public class HexReversi implements Reversi {
     this.verifyGameStarted();
     for (int row = 0; row < this.getBoardHeight(); row++) {
       for (int col = 0; col < this.getRowWidth(row); col++) {
-        if (this.isMoveLegal(player, row, col)) {
+        if (this.isMoveLegal(player, Coord.coordAt(row, col))) {
           return true;
         }
       }

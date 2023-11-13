@@ -3,7 +3,9 @@
 import org.junit.Test;
 import org.junit.Assert;
 
+import reversi.model.Coord;
 import reversi.model.HexReversi;
+import reversi.model.Player;
 import reversi.model.Reversi;
 import reversi.view.ReversiTextualView;
 import reversi.view.TextView;
@@ -107,16 +109,16 @@ public class HexReversiTest {
     Reversi model = new HexReversi();
     model.startGame(4);
 
-    Assert.assertEquals(model.getCurrentPlayer(), Reversi.Player.BLACK);
+    Assert.assertEquals(model.getCurrentPlayer(), Player.BLACK);
   }
 
   @Test
   public void testMakeMoveInvalidMove() {
     Reversi model = new HexReversi();
     model.startGame(6);
-    model.makeMove(3, 4);
+    model.makeMove(Coord.coordAt(3, 4));
     Assert.assertThrows(IllegalStateException.class,
-        () -> model.makeMove(3, 3));
+        () -> model.makeMove(Coord.coordAt(3, 3)));
   }
 
   @Test
@@ -124,11 +126,11 @@ public class HexReversiTest {
     Reversi model = new HexReversi();
     model.startGame(6);
 
-    model.makeMove(3, 4);
-    model.makeMove(2, 4);
-    model.makeMove(4, 3);
-    model.makeMove(6, 3);
-    Assert.assertTrue(model.canPlayerMove(Reversi.Player.BLACK));
+    model.makeMove(Coord.coordAt(3, 4));
+    model.makeMove(Coord.coordAt(2, 4));
+    model.makeMove(Coord.coordAt(4, 3));
+    model.makeMove(Coord.coordAt(6, 3));
+    Assert.assertTrue(model.canPlayerMove(Player.BLACK));
   }
 
   @Test
@@ -143,12 +145,12 @@ public class HexReversiTest {
     Reversi model = new HexReversi();
     TextView view = new ReversiTextualView(model);
     model.startGame(3);
-    model.makeMove(1, 0);
-    model.makeMove(1, 3);
-    model.makeMove(3, 3);
-    model.makeMove(4, 1);
-    model.makeMove(0, 1);
-    model.makeMove(3, 0);
+    model.makeMove(Coord.coordAt(1, 0));
+    model.makeMove(Coord.coordAt(1, 3));
+    model.makeMove(Coord.coordAt(3, 3));
+    model.makeMove(Coord.coordAt(4, 1));
+    model.makeMove(Coord.coordAt(0, 1));
+    model.makeMove(Coord.coordAt(3, 0));
     Assert.assertTrue(model.isGameOver());
     String gameEndState = "  _ X _" + System.lineSeparator()
             + " X X X 0" + System.lineSeparator()
@@ -162,7 +164,7 @@ public class HexReversiTest {
   public void testBlackMovesFirst() {
     Reversi model = new HexReversi();
     model.startGame(6);
-    Assert.assertEquals(Reversi.Player.BLACK, model.getCurrentPlayer());
+    Assert.assertEquals(Player.BLACK, model.getCurrentPlayer());
   }
 
   @Test
@@ -170,8 +172,8 @@ public class HexReversiTest {
     Reversi model = new HexReversi();
     model.startGame(3);
     Assert.assertThrows(IllegalStateException.class,
-        () -> model.makeMove(1, 1));
-    Assert.assertEquals(Reversi.Player.BLACK, model.getCurrentPlayer());
+        () -> model.makeMove(Coord.coordAt(1, 1)));
+    Assert.assertEquals(Player.BLACK, model.getCurrentPlayer());
   }
 
   @Test
@@ -179,11 +181,11 @@ public class HexReversiTest {
     Reversi model = new HexReversi();
     model.startGame(3);
     Assert.assertThrows(IllegalArgumentException.class,
-        () -> model.makeMove(0, 3));
+        () -> model.makeMove(Coord.coordAt(0, 3)));
     Assert.assertThrows(IllegalArgumentException.class,
-        () -> model.makeMove(-1, 3));
+        () -> model.makeMove(Coord.coordAt(-1, 3)));
     Assert.assertThrows(IllegalArgumentException.class,
-        () -> model.makeMove(4, 3));
+        () -> model.makeMove(Coord.coordAt(4, 3)));
   }
 
   @Test
@@ -191,11 +193,11 @@ public class HexReversiTest {
     Reversi model = new HexReversi();
     model.startGame(3);
     Assert.assertThrows(IllegalStateException.class,
-        () -> model.makeMove(0, 0));
+        () -> model.makeMove(Coord.coordAt(0, 0)));
     Assert.assertThrows(IllegalStateException.class,
-        () -> model.makeMove(2, 2));
+        () -> model.makeMove(Coord.coordAt(2, 2)));
     Assert.assertThrows(IllegalStateException.class,
-        () -> model.makeMove(2, 0));
+        () -> model.makeMove(Coord.coordAt(2, 0)));
   }
 
   @Test
@@ -203,12 +205,12 @@ public class HexReversiTest {
     Reversi model = new HexReversi();
     model.startGame(4);
     TextView view = new ReversiTextualView(model);
-    model.makeMove(1, 2);
-    model.makeMove(0, 2);
-    model.makeMove(5, 2);
-    model.makeMove(6, 2);
-    model.makeMove(2, 1);
-    model.makeMove(4, 4);
+    model.makeMove(Coord.coordAt(1, 2));
+    model.makeMove(Coord.coordAt(0, 2));
+    model.makeMove(Coord.coordAt(5, 2));
+    model.makeMove(Coord.coordAt(6, 2));
+    model.makeMove(Coord.coordAt(2, 1));
+    model.makeMove(Coord.coordAt(4, 4));
     String gameStateSample = " _ X X 0 _ _" + System.lineSeparator()
             + "_ _ 0 _ 0 _ _" + System.lineSeparator()
             + " _ _ 0 0 0 _";
@@ -220,9 +222,9 @@ public class HexReversiTest {
     Reversi model = new HexReversi();
     model.startGame(4);
     model.passTurn();
-    Assert.assertEquals(model.getCurrentPlayer(), Reversi.Player.WHITE);
+    Assert.assertEquals(model.getCurrentPlayer(), Player.WHITE);
     model.passTurn();
-    Assert.assertEquals(model.getCurrentPlayer(), Reversi.Player.BLACK);
+    Assert.assertEquals(model.getCurrentPlayer(), Player.BLACK);
     Assert.assertTrue(model.isGameOver());
   }
 }
