@@ -1,7 +1,8 @@
 package reversi.model;
 
 /**
- * Represents the primary model interface for playing a game of reversi.
+ * Represents the primary model interface for playing a game of reversi. The game support 2 players
+ * and a two-dimensional grid.
  */
 public interface Reversi extends ReadonlyReversi {
 

@@ -3,7 +3,6 @@
 import org.junit.Test;
 import org.junit.Assert;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,9 +13,6 @@ import reversi.model.MockReversi;
 import reversi.model.Player;
 import reversi.model.Reversi;
 import reversi.strategy.CaptureMax;
-import reversi.strategy.ReversiStrategy;
-import reversi.view.GUIView;
-import reversi.view.HexReversiGUIView;
 import reversi.view.ReversiTextualView;
 import reversi.view.TextView;
 
@@ -273,10 +269,10 @@ public class HexReversiTest {
     board.add(Collections.nCopies(3, Player.EMPTY));
     board.add(Collections.nCopies(2, Player.EMPTY));
     Assert.assertThrows(IllegalArgumentException.class,
-            () -> model.continueGame(board, Player.BLACK));
+        () -> model.continueGame(board, Player.BLACK));
     board.set(0, Collections.nCopies(2, Player.EMPTY));
     Assert.assertThrows(IllegalArgumentException.class,
-            () -> model.continueGame(board, Player.EMPTY));
+        () -> model.continueGame(board, Player.EMPTY));
     model.continueGame(board, Player.BLACK);
     Assert.assertTrue(model.isGameOver());
   }

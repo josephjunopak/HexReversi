@@ -1,13 +1,9 @@
 
-r	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(á«°Ÿúÿÿÿÿ8•çî€½1
-r	java:S117?"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÜâÙøûÿÿÿÿ8•çî€½1
-r	java:S117@"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ì’ãÎÿÿÿÿÿ8•çî€½1
-l	java:S117e"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ç£¯Z8•çî€½1
+r	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(á«°Ÿúÿÿÿÿ8•çî€½1
+r	java:S117="QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÜâÙøûÿÿÿÿ8•çî€½1
+r	java:S117>"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ì’ãÎÿÿÿÿÿ8•çî€½1
+l	java:S117c"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ç£¯Z8•çî€½1
 o
-java:S3776"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(Ëš¿ú8Íçî€½1
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(Ëš¿ú8Íçî€½1
 t
-java:S3776="RRefactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.(ØÈ®äúÿÿÿÿ8Ïçî€½1
-M
-java:S1128"+Remove this unused import 'java.util.List'.(Õë±Äøÿÿÿÿ8ã¨¹‚½1
-W
-java:S1128"5Remove this unused import 'reversi.model.HexReversi'.(€ÜÂ‚ýÿÿÿÿ8ä¨¹‚½1
+java:S3776;"RRefactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.(ØÈ®äúÿÿÿÿ8Ïçî€½1

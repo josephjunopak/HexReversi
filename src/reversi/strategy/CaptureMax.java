@@ -1,9 +1,7 @@
 package reversi.strategy;
-import java.util.List;
 
 import reversi.model.Player;
 import reversi.model.Coord;
-import reversi.model.HexReversi;
 import reversi.model.ReadonlyReversi;
 
 /**

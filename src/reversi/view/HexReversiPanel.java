@@ -10,15 +10,21 @@ import java.util.Objects;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
 
-import java.awt.*;
-import java.awt.event.MouseEvent;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Color;
+import java.awt.BasicStroke;
+import java.awt.Point;
 import java.awt.geom.Point2D;
+import java.awt.Shape;
+import java.awt.Dimension;
+import java.awt.event.MouseEvent;
 
 import reversi.model.Coord;
 import reversi.model.Player;
 import reversi.model.ReadonlyReversi;
 
-public class HexReversiPanel extends JPanel{
+public class HexReversiPanel extends JPanel {
   private final ReadonlyReversi model;
 
   private boolean mouseIsDown;
@@ -30,6 +36,12 @@ public class HexReversiPanel extends JPanel{
   private static final double CELL_WIDTH = 20;
   private static final double CELL_HEIGHT = CELL_WIDTH * 2 / Math.sqrt(3);
 
+  /**
+   * The constructor for a HexReversiPanel, which takes in a read-only version of the model to
+   * parse for generating the GUI. This constructor also instantiates the event listeners for the
+   * Panel.
+   * @param model
+   */
   public HexReversiPanel(ReadonlyReversi model) {
     this.model = Objects.requireNonNull(model);
     this.boardSize = (this.model.getBoardHeight() + 1) / 2;

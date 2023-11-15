@@ -1,5 +1,13 @@
 package reversi.model;
 
+/**
+ * Represents coordinates in the game of Reversi.
+ * Each board will consist of rows and columns.
+ * The coordinates containing information of the row and col.
+ * The row is the top-down oriented row the 0th row is the 1st row.
+ * The col is the left-right oriented column
+ * where the 0th col is the left-most cell.
+ */
 public final class Coord {
   public final int row;
   public final int col;

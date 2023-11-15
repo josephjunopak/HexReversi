@@ -2,14 +2,11 @@ package reversi.model;
 
 import java.util.List;
 
+/**
+ * The read-only interface for reversi that only contains the observational public functions for
+ * the Reversi game.
+ */
 public interface ReadonlyReversi {
-  /**
-   * Enum that represents a player's piece in a game of Reversi.
-   * A cell can either be occupied by a BLACK or WHITE piece
-   * OR can be empty specified by EMPTY.
-   */
-
-
   /**
    * Gives the current player turn.
    * @return The color representing the current player's turn.

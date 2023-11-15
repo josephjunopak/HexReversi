@@ -1,10 +1,7 @@
 package reversi;
 
-import reversi.model.Coord;
 import reversi.model.HexReversi;
-import reversi.model.Player;
 import reversi.model.Reversi;
-import reversi.strategy.CaptureMax;
 import reversi.view.GUIView;
 import reversi.view.HexReversiGUIView;
 

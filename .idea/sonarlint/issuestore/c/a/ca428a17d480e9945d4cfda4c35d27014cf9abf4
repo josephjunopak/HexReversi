@@ -1,25 +1,25 @@
 
-n	java:S117‘"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ˆûœŠ8ÕÇ¡€½1
-s	java:S117˜"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÿ¢ºıùÿÿÿÿ8ÖÇ¡€½1
-s	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ñ¶¦©ùÿÿÿÿ8ÖÇ¡€½1
-n	java:S117È"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(à­²Ş8ÖÇ¡€½1
+n	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ˆûœŠ8â­„½1
+s	java:S117¤"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÿ¢ºıùÿÿÿÿ8ã­„½1
+s	java:S117©"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ñ¶¦©ùÿÿÿÿ8ã­„½1
+n	java:S117Ô"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(à­²Ş8ã­„½1
 I
-java:S1948"'Make "model" transient or serializable.(Š·¶ÿÿÿÿÿ8ã©’‡»1
+java:S1948"'Make "model" transient or serializable.(Š·¶ÿÿÿÿÿ8ë­„½1
 K
-java:S1948".Make "selectedCell" transient or serializable.(óÀ‹·8§¿«€½1
+java:S1948"".Make "selectedCell" transient or serializable.(óÀ‹·8ë­„½1
 Ÿ
-java:S1186§"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(÷—8µÈ¡€½1
+java:S1186³"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(÷—8õ­„½1
 ¤
-java:S1186½"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(˜Â½€øÿÿÿÿ8µÈ¡€½1
-H	java:S106°"+Replace this use of System.out by a logger.(ÿ €8¸È¡€½1
-H	java:S106³"+Replace this use of System.out by a logger.(§¼¿À8¹È¡€½1
-M	java:S106¸"+Replace this use of System.out by a logger.(‡Ã­®ùÿÿÿÿ8ºÈ¡€½1
-M	java:S106Ò"+Replace this use of System.out by a logger.(³ÈÈ¥ûÿÿÿÿ8¿È¡€½1
+java:S1186É"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(˜Â½€øÿÿÿÿ8õ­„½1
+H	java:S106¼"+Replace this use of System.out by a logger.(ÿ €8ö­„½1
+H	java:S106¿"+Replace this use of System.out by a logger.(§¼¿À8ö­„½1
+M	java:S106Ä"+Replace this use of System.out by a logger.(‡Ã­®ùÿÿÿÿ8ö­„½1
+M	java:S106Ş"+Replace this use of System.out by a logger.(³ÈÈ¥ûÿÿÿÿ8÷­„½1
 O
-java:S3398–",Move this method into "MouseEventsListener".(ˆ»±Ûÿÿÿÿÿ8ÀÈ¡€½1
-O
-java:S3398",Move this method into "MouseEventsListener".(ñ¶¦©ùÿÿÿÿ8ÁÈ¡€½1
+java:S3398¢",Move this method into "MouseEventsListener".(ˆ»±Ûÿÿÿÿÿ8ø­„½1
 I
-java:S3398‰",Move this method into "MouseEventsListener".(¶Éİg8ÁÈ¡€½1
+java:S3398•",Move this method into "MouseEventsListener".(¶Éİg8ø­„½1
+O
+java:S3398©",Move this method into "MouseEventsListener".(ñ¶¦©ùÿÿÿÿ8ø­„½1
 Q
-java:S1068"/Remove this unused "mouseIsDown" private field.(¯¹ô¯üÿÿÿÿ8í©’‡»1
+java:S1068"/Remove this unused "mouseIsDown" private field.(¯¹ô¯üÿÿÿÿ8ø­„½1

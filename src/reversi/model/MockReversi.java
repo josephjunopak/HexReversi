@@ -1,13 +1,23 @@
 package reversi.model;
 
-import java.io.IOException;
 import java.util.List;
 
+/**
+ * A model mock for hex reversi that keeps a transcript of moves that are deemed valid or invalid
+ * by the real HexReversi model. It also forces the move (6, 3) to be the only valid move at all
+ * times. This mock is primarily used to test the CaptureMax strategy, to ensure that it checks all
+ * possible cells.
+ */
 public class MockReversi implements ReadonlyReversi {
   private final HexReversi realModel;
   private StringBuilder valid_moves;
   private StringBuilder invalid_moves;
 
+  /**
+   * The constructor for the mock which takes in a real model of reversi to delegate method calls
+   * to. It also instantiates the string-builders for valid and invalid moves.
+   * @param model
+   */
   public MockReversi(HexReversi model) {
     this.realModel = model;
     this.valid_moves = new StringBuilder();

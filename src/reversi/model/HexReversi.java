@@ -11,6 +11,11 @@ import java.util.List;
  * and the 0th element of an arrayList (row), is the most left cell in that row. The main function
  * to move pieces is the makeMove(int row, int col) function.
  *
+ * The cell is set up as a 2D list of Players. The outermost list contains lists of Players
+ * each representing a horizontal row in the hexagonal grid. The lengths of these lists change,
+ * with the length of the center row being the longest and the first and last list being the
+ * shortest. Each inner list is indexed based on the column the cell is within that row.
+ *
  */
 public class HexReversi implements Reversi {
   /**
@@ -23,9 +28,10 @@ public class HexReversi implements Reversi {
    * traversing through the grid using the ideas of rows and column was easy since it followed
    * a consistent pattern.
    */
-  //0-th arraylist inside cellGrid is the top row
-  //0-th element of an arrayList (row), is the most left cell
-    private List<List<Player>> cellGrid;
+
+  // 0-th arraylist inside cellGrid is the top row
+  // 0-th element of an arrayList (row), is the most left cell
+  private List<List<Player>> cellGrid;
   
   // True is game is started
   // False is game not yet started
@@ -48,8 +54,8 @@ public class HexReversi implements Reversi {
   /**
    * Continues game based on the given state of the another board and the current player.
    *
-   * @param currentBoard
-   * @param currentPlayer
+   * @param currentBoard board to continue game from
+   * @param currentPlayer current player that is up to make a move
    * @throws IllegalArgumentException if the provided player is EMPTY or null, or if the
    *                                  current board is invalid.
    * @throws IllegalStateException  if the game has already started
@@ -272,7 +278,7 @@ public class HexReversi implements Reversi {
    * @param player the player that placed the piece.
    * @param coord  the coordinates containing information of the row and col
    * @param depth  the number of pieces needed to be flipped in the direction specified
-   * @param dir    the direction on the hex grid to flip pieces in, with 0 indicating directly to the
+   * @param dir    the direction on the hex grid to flip pieces in
    *               left and incrementing clockwise.
    */
   private void flipPiecesInDirection(Player player, Coord coord, int depth, int dir) {
