@@ -82,4 +82,14 @@ public interface ReadonlyReversi {
    * Returns a copy of the current game board of Reversi.
    */
   List<List<Player>> copyBoard();
+
+  /**
+   * Returns whether the given spot is a legal move for the given player. A legal move
+   * is defined as a move that must flip at least one opponent's piece.
+   *
+   * @param player the player that wants to place the piece
+   * @param coord Location on the grid to check
+   * @return True if the given coord is a legal move for the given player
+   */
+  public boolean isMoveLegal(Player player, Coord coord);
 }

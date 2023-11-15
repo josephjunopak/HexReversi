@@ -4,30 +4,48 @@ import java.util.List;
 import reversi.model.Player;
 import reversi.model.Coord;
 import reversi.model.HexReversi;
+import reversi.model.ReadonlyReversi;
 
+/**
+ * Strategy that tries to find the optimal move to capture as many pieces on this
+ * turn as possible given the player and current state of the board.
+ */
 public class CaptureMax implements ReversiStrategy {
-  public Coord chooseMove(HexReversi model, Player forWhom) {
-    List<List<Player>> currentBoard = model.copyBoard();
-    int maxFlips = 0;
+  /**
+   * Given the current state of the board and given player, this function will
+   * return the most optimal move, which means that it will flip the most
+   * number of pieces possible. In a tie, the uppermost-leftmost coord will be chosen.
+   *
+   * @param model   the model in which the move will be made.
+   * @param forWhom the player in the model whose is moving.
+   * @return Coord that will flip the most pieces
+   */
+  public Coord chooseMove(ReadonlyReversi model, Player forWhom) {
+    int maxFlips = -1;
     Coord optimalMove = null;
 
     for (int row = 0; row < model.getBoardHeight(); row ++) {
       for (int col = 0; col < model.getRowWidth(row); col++) {
         Coord move = Coord.coordAt(row, col);
         if (model.isMoveLegal(forWhom, move)) {
+          int total_flips = 0;
+          //Checks each direction for the number of flips that has occurred
           for (int dir = 0; dir < 6; dir++) {
-            int depth = this.samePieceInDirection(forWhom, model.getBoardHeight(), move, dir);
+            int depth = this.samePieceInDirection(forWhom, model, move, dir);
             if (depth > 1) {
-              this.flipPiecesInDirection(forWhom, model.getBoardHeight(), move, depth, dir);
+              total_flips += depth - 1;
             }
+          }
+          // If a tie occurs, the initial coord found is chosen as the most optimal move
+          if (total_flips > maxFlips) {
+            maxFlips = total_flips;
+            optimalMove = move;
           }
         }
       }
     }
 
-
-
-    return Coord.coordAt(0, 0);
+    return optimalMove;
   }
 
   /**
@@ -40,24 +58,24 @@ public class CaptureMax implements ReversiStrategy {
    * @return  the depth of the next piece of the same color, or -1 if there is a gap or no piece of
    *          the same color.
    */
-  private int samePieceInDirection(Player player, int height, Coord coord, int dir) {
+  private int samePieceInDirection(Player player, ReadonlyReversi model, Coord coord, int dir) {
     int depth = 1;
     int current_row = coord.row;
     int current_col = coord.col;
-    int half_height = height / 2;
+    int height = model.getBoardHeight();
     while (depth < height) {
       switch (dir) {
         case 0: // left
           current_col--;
           break;
         case 1: // up left
-          if (current_row <= half_height) {
+          if (current_row <= height / 2) {
             current_col--;
           }
           current_row--;
           break;
         case 2: // up right
-          if (current_row > half_height) {
+          if (current_row > height / 2) {
             current_col++;
           }
           current_row--;
@@ -66,13 +84,13 @@ public class CaptureMax implements ReversiStrategy {
           current_col++;
           break;
         case 4: // down right
-          if (current_row < half_height) {
+          if (current_row < height / 2) {
             current_col++;
           }
           current_row++;
           break;
         case 5: // down left
-          if (current_row >= half_height) {
+          if (current_row >= height / 2) {
             current_col--;
           }
           current_row++;
@@ -81,8 +99,9 @@ public class CaptureMax implements ReversiStrategy {
           return -1;
       }
       Player player_at_cell;
+      // Terminate loop if the cell reaches an empty cell or out-of-bounds
       try {
-        player_at_cell = this.getPlayerAtCell(Coord.coordAt(current_row, current_col));
+        player_at_cell = model.getPlayerAtCell(Coord.coordAt(current_row, current_col));
       }
       catch (IllegalArgumentException e) {
         return -1;
@@ -90,64 +109,12 @@ public class CaptureMax implements ReversiStrategy {
       if (player_at_cell == Player.EMPTY) {
         return -1;
       }
+      // if the loop finds another cell with the same color piece, return the depth of that piece
       if (player == player_at_cell) {
         return depth;
       }
       depth++;
     }
     return -1;
-  }
-
-  /**
-   * Helper function for flipping pieces in a direction from the original placement position.
-   *
-   * @param player the player that placed the piece.
-   * @param coord  the coordinates containing information of the row and col
-   * @param depth  the number of pieces needed to be flipped in the direction specified
-   * @param dir    the direction on the hex grid to flip pieces in, with 0 indicating directly to the
-   *               left and incrementing clockwise.
-   */
-  private void flipPiecesInDirection(Player player, int height, Coord coord, int depth, int dir) {
-    int current_row = coord.row;
-    int current_col = coord.col;
-
-    int half_height = height / 2;
-    while (depth-- > 0) {
-      switch (dir) {
-        case 0: // left
-          current_col--;
-          break;
-        case 1: // up left
-          if (current_row <= half_height) {
-            current_col--;
-          }
-          current_row--;
-          break;
-        case 2: // up right
-          if (current_row > half_height) {
-            current_col++;
-          }
-          current_row--;
-          break;
-        case 3: // right
-          current_col++;
-          break;
-        case 4: // down right
-          if (current_row < half_height) {
-            current_col++;
-          }
-          current_row++;
-          break;
-        case 5: // down left
-          if (current_row >= half_height) {
-            current_col--;
-          }
-          current_row++;
-          break;
-        default:
-          break;
-      }
-      this.cellGrid.get(current_row).set(current_col, player);
-    }
   }
 }

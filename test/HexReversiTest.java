@@ -3,10 +3,20 @@
 import org.junit.Test;
 import org.junit.Assert;
 
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import reversi.model.Coord;
 import reversi.model.HexReversi;
+import reversi.model.MockReversi;
 import reversi.model.Player;
 import reversi.model.Reversi;
+import reversi.strategy.CaptureMax;
+import reversi.strategy.ReversiStrategy;
+import reversi.view.GUIView;
+import reversi.view.HexReversiGUIView;
 import reversi.view.ReversiTextualView;
 import reversi.view.TextView;
 
@@ -206,11 +216,17 @@ public class HexReversiTest {
     model.startGame(4);
     TextView view = new ReversiTextualView(model);
     model.makeMove(Coord.coordAt(1, 2));
+    System.out.println(view);
     model.makeMove(Coord.coordAt(0, 2));
+    System.out.println(view);
     model.makeMove(Coord.coordAt(5, 2));
+    System.out.println(view);
     model.makeMove(Coord.coordAt(6, 2));
+    System.out.println(view);
     model.makeMove(Coord.coordAt(2, 1));
+    System.out.println(view);
     model.makeMove(Coord.coordAt(4, 4));
+    System.out.println(view);
     String gameStateSample = " _ X X 0 _ _" + System.lineSeparator()
             + "_ _ 0 _ 0 _ _" + System.lineSeparator()
             + " _ _ 0 0 0 _";
@@ -226,5 +242,77 @@ public class HexReversiTest {
     model.passTurn();
     Assert.assertEquals(model.getCurrentPlayer(), Player.BLACK);
     Assert.assertTrue(model.isGameOver());
+  }
+
+  @Test
+  public void testCaptureMaxStrategyPass() {
+    Reversi model = new HexReversi();
+    model.startGame(2);
+    Coord optimalMove = new CaptureMax().chooseMove(model, Player.BLACK);
+    Assert.assertNull(optimalMove);
+  }
+
+  @Test
+  public void testCaptureMaxTie() {
+    Reversi model = new HexReversi();
+    model.startGame(4);
+    Coord expectedMove = Coord.coordAt(1, 2);
+    Coord optimalMove = new CaptureMax().chooseMove(model, Player.BLACK);
+    Assert.assertEquals(optimalMove, expectedMove);
+  }
+
+  @Test
+  public void testContinueInvalidBoard() {
+    HexReversi model = new HexReversi();
+    List<List<Player>> board = new ArrayList<>();
+    Assert.assertThrows(IllegalArgumentException.class,
+        () -> model.continueGame(null, Player.BLACK));
+    Assert.assertThrows(IllegalArgumentException.class,
+        () -> model.continueGame(board, Player.BLACK));
+    board.add(Collections.nCopies(1, Player.EMPTY));
+    board.add(Collections.nCopies(3, Player.EMPTY));
+    board.add(Collections.nCopies(2, Player.EMPTY));
+    Assert.assertThrows(IllegalArgumentException.class,
+            () -> model.continueGame(board, Player.BLACK));
+    board.set(0, Collections.nCopies(2, Player.EMPTY));
+    Assert.assertThrows(IllegalArgumentException.class,
+            () -> model.continueGame(board, Player.EMPTY));
+    model.continueGame(board, Player.BLACK);
+    Assert.assertTrue(model.isGameOver());
+  }
+
+  @Test
+  public void testCaptureMaxNormalSituation() {
+    Reversi model = new HexReversi();
+    model.startGame(4);
+    model.makeMove(Coord.coordAt(1, 2));
+    model.makeMove(Coord.coordAt(0, 2));
+    Coord expectedMove = Coord.coordAt(2, 1);
+    Coord optimalMove = new CaptureMax().chooseMove(model, model.getCurrentPlayer());
+    Assert.assertEquals(expectedMove, optimalMove);
+  }
+
+  @Test
+  public void testMockModelValidTranscript() {
+    HexReversi model = new HexReversi();
+    MockReversi mock = new MockReversi(model);
+    model.startGame(3);
+    Coord mockCoord = new CaptureMax().chooseMove(mock, Player.BLACK);
+    // only valid moves should be (0, 1); (1, 0); (1, 3); (3, 0); (3, 3); (4, 1)
+    Assert.assertTrue(mock.getValidTranscript().contains(Coord.coordAt(0, 1).toString()));
+    Assert.assertTrue(mock.getValidTranscript().contains(Coord.coordAt(1, 0).toString()));
+    Assert.assertTrue(mock.getValidTranscript().contains(Coord.coordAt(1, 3).toString()));
+    Assert.assertTrue(mock.getValidTranscript().contains(Coord.coordAt(3, 0).toString()));
+    Assert.assertTrue(mock.getValidTranscript().contains(Coord.coordAt(3, 3).toString()));
+    Assert.assertTrue(mock.getValidTranscript().contains(Coord.coordAt(4, 1).toString()));
+  }
+
+  @Test
+  public void testMockModelForcedMove() {
+    HexReversi model = new HexReversi();
+    MockReversi mock = new MockReversi(model);
+    model.startGame(4);
+    Coord mockCoord = new CaptureMax().chooseMove(mock, Player.BLACK);
+    Assert.assertEquals(Coord.coordAt(6, 3), mockCoord);
   }
 }

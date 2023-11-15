@@ -46,6 +46,51 @@ public class HexReversi implements Reversi {
   }
 
   /**
+   * Continues game based on the given state of the another board and the current player.
+   *
+   * @param currentBoard
+   * @param currentPlayer
+   * @throws IllegalArgumentException if the provided player is EMPTY or null, or if the
+   *                                  current board is invalid.
+   * @throws IllegalStateException  if the game has already started
+   */
+  public void continueGame(List<List<Player>> currentBoard, Player currentPlayer)
+          throws IllegalArgumentException {
+    if (this.gameStarted) {
+      throw new IllegalStateException("Game has already started");
+    }
+    this.validateBoard(currentBoard);
+    if (currentPlayer == null || currentPlayer == Player.EMPTY) {
+      throw new IllegalArgumentException("Player cannot be null or empty");
+    }
+    this.cellGrid = currentBoard;
+    this.consecutivePasses = 0;
+    this.currentTurn = currentPlayer;
+    this.gameStarted = true;
+  }
+
+  private void validateBoard(List<List<Player>> currentBoard) throws IllegalArgumentException {
+    if (currentBoard == null) {
+      throw new IllegalArgumentException("Board cannot be null");
+    }
+    if (currentBoard.size() % 2 == 0) {
+      throw new IllegalArgumentException("Invalid board size");
+    }
+    int boardSize = (currentBoard.size() + 1) / 2;
+
+    for (int row = 0; row < currentBoard.get(0).size(); row ++) {
+      if (currentBoard.get(row).size() != currentBoard.size() - Math.abs(row - boardSize + 1)) {
+        throw new IllegalArgumentException("Invalid board size");
+      }
+      for (int col = 0; col < currentBoard.get(row).size(); col++) {
+        if (currentBoard.get(row).get(col) == null) {
+          throw new IllegalArgumentException("Cells cannot be null in board");
+        }
+      }
+    }
+  }
+
+  /**
    * Starts a game of Reversi with a hex-shaped board. Takes in an integer
    * to specify the length of each side in the board.
    * The invariant that the currentPlayer is not EMPTY is maintained because currentTurn is
@@ -147,6 +192,8 @@ public class HexReversi implements Reversi {
     int current_row = coord.row;
     int current_col = coord.col;
     while (depth < this.getBoardHeight()) {
+      // This switch statement assists in navigating our coordinate system, while navigating along
+      //   straight lines on the hex grid.
       switch (dir) {
         case 0: // left
           current_col--;
@@ -199,6 +246,14 @@ public class HexReversi implements Reversi {
     return -1;
   }
 
+  /**
+   * Returns whether the given spot is a legal move for the given player. A legal move
+   * is defined as a move that must flip at least one opponent's piece.
+   *
+   * @param player the player that wants to place the piece
+   * @param coord Location on the grid to check
+   * @return True if the given coord is a legal move for the given player
+   */
   public boolean isMoveLegal(Player player, Coord coord) {
     if (!this.isCellEmpty(coord)) {
       return false;

@@ -1,0 +1,5 @@
+
+r	java:S116"VRename this field "valid_moves" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‚ê¾º8Ý¶Íƒ½1
+y	java:S116	"XRename this field "invalid_moves" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ÿ÷žæùÿÿÿÿ8Ý¶Íƒ½1
+R
+java:S1128"0Remove this unused import 'java.io.IOException'.(ªº»Úýÿÿÿÿ8šæÑƒ½1

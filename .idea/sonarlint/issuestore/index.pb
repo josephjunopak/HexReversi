@@ -23,3 +23,13 @@ U
 %src/reversi/view/HexReversiPanel.java,c/a/ca428a17d480e9945d4cfda4c35d27014cf9abf4
 O
 src/reversi/HexReversiGame.java,7/c/7c21c493adde472f62103c84da55dc8b6c009477
+Y
+)src/reversi/strategy/ReversiStrategy.java,3/8/3818a28e296028d291970a239c1edd6218530fbb
+T
+$src/reversi/strategy/CaptureMax.java,a/7/a7ec3cfae6f94b6702dc40fad7addc9c38eb3e8d
+M
+src/reversi/model/Player.java,8/7/87c351875b50cefc3494379b54f015a24a04029c
+R
+"src/reversi/model/MockReversi.java,9/9/99a9fec5a00cfef518b67507c3656e815b14f75d
+L
+src/reversi/model/Coord.java,6/6/662d5ffea8b435ec343b9472d4f8e3518d8f1b87

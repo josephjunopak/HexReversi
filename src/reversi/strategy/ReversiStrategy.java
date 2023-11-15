@@ -3,6 +3,7 @@ package reversi.strategy;
 import reversi.model.HexReversi;
 import reversi.model.Player;
 import reversi.model.Coord;
+import reversi.model.ReadonlyReversi;
 import reversi.model.Reversi;
 
 public interface ReversiStrategy {
@@ -14,5 +15,5 @@ public interface ReversiStrategy {
    * @return the coordinates of the upper-left most move that satisfies the strategy, or null if
    *         the player chooses to pass.
    */
-  Coord chooseMove(HexReversi model, Player forWhom);
+  Coord chooseMove(ReadonlyReversi model, Player forWhom);
 }
