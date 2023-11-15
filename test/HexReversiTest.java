@@ -294,6 +294,8 @@ public class HexReversiTest {
     MockReversi mock = new MockReversi(model);
     model.startGame(3);
     Coord mockCoord = new CaptureMax().chooseMove(mock, Player.BLACK);
+    System.out.println(mock.getValidTranscript());
+    System.out.println(mock.getInvalidTranscript());
     // only valid moves should be (0, 1); (1, 0); (1, 3); (3, 0); (3, 3); (4, 1)
     Assert.assertTrue(mock.getValidTranscript().contains(Coord.coordAt(0, 1).toString()));
     Assert.assertTrue(mock.getValidTranscript().contains(Coord.coordAt(1, 0).toString()));
@@ -301,6 +303,7 @@ public class HexReversiTest {
     Assert.assertTrue(mock.getValidTranscript().contains(Coord.coordAt(3, 0).toString()));
     Assert.assertTrue(mock.getValidTranscript().contains(Coord.coordAt(3, 3).toString()));
     Assert.assertTrue(mock.getValidTranscript().contains(Coord.coordAt(4, 1).toString()));
+
   }
 
   @Test

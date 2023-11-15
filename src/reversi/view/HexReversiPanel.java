@@ -24,6 +24,10 @@ import reversi.model.Coord;
 import reversi.model.Player;
 import reversi.model.ReadonlyReversi;
 
+/**
+ * This class represents a panel to showcase our game of Reversi.
+ * Contains the logic on how the panel should be displayed.
+ */
 public class HexReversiPanel extends JPanel {
   private final ReadonlyReversi model;
 
@@ -40,7 +44,8 @@ public class HexReversiPanel extends JPanel {
    * The constructor for a HexReversiPanel, which takes in a read-only version of the model to
    * parse for generating the GUI. This constructor also instantiates the event listeners for the
    * Panel.
-   * @param model
+   *
+   * @param model ReadOnlyModel of Reversi
    */
   public HexReversiPanel(ReadonlyReversi model) {
     this.model = Objects.requireNonNull(model);
@@ -100,8 +105,9 @@ public class HexReversiPanel extends JPanel {
         if (cell != Player.EMPTY) {
           this.drawPlayer(g2d, center, cell);
         }
-        else if (this.selectedCell != null &&
-                this.selectedCell.col == col && this.selectedCell.row == row) {
+        else if (this.selectedCell != null
+                && this.selectedCell.col == col
+                && this.selectedCell.row == row) {
           this.drawHexagon(g2d, center, CELL_HEIGHT / 2, Color.cyan);
         }
       }
@@ -149,7 +155,7 @@ public class HexReversiPanel extends JPanel {
   private AffineTransform transformPhysicalToLogical() {
     AffineTransform ret = new AffineTransform();
     Dimension preferred = getPreferredLogicalSize();
-    ret.scale(preferred.getWidth()/ getWidth(), preferred.getHeight() / getHeight());
+    ret.scale(preferred.getWidth() / getWidth(), preferred.getHeight() / getHeight());
     return ret;
   }
 
@@ -166,17 +172,19 @@ public class HexReversiPanel extends JPanel {
     return Coord.coordAt(row, col);
   }
 
-  private boolean isCellValid(Coord cell_index) {
-    if (cell_index.row < 0 || cell_index.row >= this.model.getBoardHeight()) {
+  private boolean isCellValid(Coord cellIndex) {
+    if (cellIndex.row < 0 || cellIndex.row >= this.model.getBoardHeight()) {
       return false;
     }
-    return cell_index.col >= 0 && cell_index.col < this.model.getRowWidth(cell_index.row);
+    return cellIndex.col >= 0 && cellIndex.col < this.model.getRowWidth(cellIndex.row);
   }
 
   private class KeyEventsListener implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
+      // There is no action to be done on a keyTyped event, but the function must be overridden
+      // because this calss implements KeyListener.
     }
 
     @Override
@@ -199,6 +207,8 @@ public class HexReversiPanel extends JPanel {
 
     @Override
     public void keyReleased(KeyEvent e) {
+      // There is no action to be done on a keyReleased event, but the function must be overridden
+      // because this calss implements KeyListener.
     }
   }
 

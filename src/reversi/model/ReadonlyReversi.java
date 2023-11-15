@@ -88,5 +88,5 @@ public interface ReadonlyReversi {
    * @param coord Location on the grid to check
    * @return True if the given coord is a legal move for the given player
    */
-  public boolean isMoveLegal(Player player, Coord coord);
+  boolean isMoveLegal(Player player, Coord coord);
 }

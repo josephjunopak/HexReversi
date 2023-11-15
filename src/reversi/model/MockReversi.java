@@ -16,12 +16,15 @@ public class MockReversi implements ReadonlyReversi {
   /**
    * The constructor for the mock which takes in a real model of reversi to delegate method calls
    * to. It also instantiates the string-builders for valid and invalid moves.
-   * @param model
+   * @param model model real model with correct implementations
    */
   public MockReversi(HexReversi model) {
     this.realModel = model;
     this.valid_moves = new StringBuilder();
     this.invalid_moves = new StringBuilder();
+
+    valid_moves.append("All valid potential moves:");
+    invalid_moves.append("All invalid moves:");
   }
 
   /**
@@ -35,9 +38,11 @@ public class MockReversi implements ReadonlyReversi {
   @Override
   public boolean isMoveLegal(Player player, Coord coord) {
     if (this.realModel.isMoveLegal(player, coord)) {
+      valid_moves.append(System.lineSeparator());
       valid_moves.append(coord.toString());
     }
     else {
+      invalid_moves.append(System.lineSeparator());
       invalid_moves.append(coord.toString());
     }
     return (coord.equals(Coord.coordAt(6, 3)));
@@ -64,7 +69,8 @@ public class MockReversi implements ReadonlyReversi {
    * @throws IllegalArgumentException if the row or column is invalid
    */
   @Override
-  public Player getPlayerAtCell(Coord coord) throws IllegalArgumentException, IllegalStateException {
+  public Player getPlayerAtCell(Coord coord)
+          throws IllegalArgumentException, IllegalStateException {
     return realModel.getPlayerAtCell(coord);
   }
 
@@ -119,7 +125,7 @@ public class MockReversi implements ReadonlyReversi {
   /**
    * Returns the number of cells in the row specified.
    *
-   * @param row
+   * @param row number of row
    * @return the number of cells in row specified
    * @throws IllegalStateException if the game hasn't started yet
    */

@@ -33,3 +33,7 @@ R
 "src/reversi/model/MockReversi.java,9/9/99a9fec5a00cfef518b67507c3656e815b14f75d
 L
 src/reversi/model/Coord.java,6/6/662d5ffea8b435ec343b9472d4f8e3518d8f1b87
+G
+strategy-transcript.txt,1/1/1123ed799e5aaf6bff95e8ab183fa67b85af93dd
+H
+src/META-INF/MANIFEST.MF,e/4/e4b1fd2293ba1e598e6bec4e0ee3b6b6851eb5a2

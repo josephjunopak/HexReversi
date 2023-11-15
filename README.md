@@ -89,5 +89,20 @@ implementation(s) of the view
   implement a score method. We implemented the function by simply going over each
   cell and counting how many cells contain a piece for the player.
 - Can the player move at a specific coordinate
-  - We had this function previously as private but switched it
-  to public knowing that we would have to use it in the controller.
+  - We had this function previously as private but switched it to public knowing that we would have 
+to use it in the controller. It was also added moved to the read-only interface for the model.
+
+- Added a continueGame function to HexReversi to support creating a custom game
+  - doing this required creating a new helper function to validate the shape of the board.
+- Moved the Player Enum to a separate file instead of keeping it within the game.
+- Created a Coord value-class that tracks the 2d coordinates within the hex-grid.
+  - The 2 changes above required some refactoring of the dependant files.
+- Added access modifiers to HexReversi fields.
+- Added a Mock implementation of the readonly interface to test the CaptureMax Strategy
+- Added a Strategy package containing function objects that can find the "best move" according to a
+strategy.
+  - Only the CaptureMax strategy has been added, which prioritizes moves which flip the most amount
+of pieces. It also defaults to top-left cells when there are ties.
+- Added a stub GUI that can display the model but only supports selecting cells and has no
+interactions with the model yet.
+- Added JUnit testing for mockModel and maxCapture strategy.

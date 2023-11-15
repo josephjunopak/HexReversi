@@ -62,6 +62,8 @@ public class CaptureMax implements ReversiStrategy {
     int current_col = coord.col;
     int height = model.getBoardHeight();
     while (depth < height) {
+      // This switch statement aids in navigating our coordinate system since adjacency between
+      //  cells changes after the halfway point.
       switch (dir) {
         case 0: // left
           current_col--;

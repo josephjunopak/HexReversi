@@ -6,7 +6,12 @@ package reversi.model;
  * The coordinates containing information of the row and col.
  * The row is the top-down oriented row the 0th row is the 1st row.
  * The col is the left-right oriented column
- * where the 0th col is the left-most cell.
+ * where the 0th col is the left-most cell.<br>
+ * Hex-Grid Example:<br>
+ * rows&nbsp;&nbsp;&nbsp;cols<br>
+ * &nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 1<br>
+ * &nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 1 2<br>
+ * &nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 1
  */
 public final class Coord {
   public final int row;
@@ -43,7 +48,7 @@ public final class Coord {
 
   @Override
   public String toString() {
-    return this.row + ", " + this.col;
+    return "row:" + this.row + ", col: " + this.col;
   }
 
 }

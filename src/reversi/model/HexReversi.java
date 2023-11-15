@@ -10,7 +10,6 @@ import java.util.List;
  * The cells on the board can be located as where the 0th arraylist inside cellGrid is the top row
  * and the 0th element of an arrayList (row), is the most left cell in that row. The main function
  * to move pieces is the makeMove(int row, int col) function.
- *
  * The cell is set up as a 2D list of Players. The outermost list contains lists of Players
  * each representing a horizontal row in the hexagonal grid. The lengths of these lists change,
  * with the length of the center row being the longest and the first and last list being the
@@ -198,8 +197,8 @@ public class HexReversi implements Reversi {
     int current_row = coord.row;
     int current_col = coord.col;
     while (depth < this.getBoardHeight()) {
-      // This switch statement assists in navigating our coordinate system, while navigating along
-      //   straight lines on the hex grid.
+      // This switch statement aids in navigating our coordinate system since adjacency between
+      //  cells changes after the halfway point.
       switch (dir) {
         case 0: // left
           current_col--;
@@ -285,6 +284,8 @@ public class HexReversi implements Reversi {
     int current_row = coord.row;
     int current_col = coord.col;
     while (depth-- > 0) {
+      // This switch statement aids in navigating our coordinate system since adjacency between
+      //  cells changes after the halfway point.
       switch (dir) {
         case 0: // left
           current_col--;
