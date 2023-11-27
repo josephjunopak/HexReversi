@@ -1,20 +1,22 @@
 
-n	java:S117£"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ˆûœŠ8â­„½1
-s	java:S117ª"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÿ¢ºıùÿÿÿÿ8ã­„½1
-n	java:S117Ş"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(à­²Ş8ã­„½1
+n	java:S117¦"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ˆûœŠ8æ€’Á1
+s	java:S117­"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÿ¢ºıùÿÿÿÿ8‘æ€’Á1
+n	java:S117á"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(à­²Ş8‘æ€’Á1
 I
-java:S1948 "'Make "model" transient or serializable.(Š·¶ÿÿÿÿÿ8ë­„½1
+java:S1948#"'Make "model" transient or serializable.(Š·¶ÿÿÿÿÿ8ğ›€’Á1
 K
-java:S1948&".Make "selectedCell" transient or serializable.(óÀ‹·8ë­„½1
-H	java:S106Ä"+Replace this use of System.out by a logger.(ÿ €8ö­„½1
-H	java:S106Ç"+Replace this use of System.out by a logger.(§¼¿À8ö­„½1
-M	java:S106Ì"+Replace this use of System.out by a logger.(‡Ã­®ùÿÿÿÿ8ö­„½1
-M	java:S106è"+Replace this use of System.out by a logger.(³ÈÈ¥ûÿÿÿÿ8÷­„½1
-O
-java:S3398¨",Move this method into "MouseEventsListener".(ˆ»±Ûÿÿÿÿÿ8ø­„½1
+java:S1948)".Make "selectedCell" transient or serializable.(óÀ‹·8ñ›€’Á1
+H	java:S106Ç"+Replace this use of System.out by a logger.(ÿ €8éæ€’Á1
+H	java:S106Ê"+Replace this use of System.out by a logger.(§¼¿À8êæ€’Á1
+M	java:S106Ï"+Replace this use of System.out by a logger.(‡Ã­®ùÿÿÿÿ8êæ€’Á1
+M	java:S106ë"+Replace this use of System.out by a logger.(³ÈÈ¥ûÿÿÿÿ8ìæ€’Á1
 I
-java:S3398›",Move this method into "MouseEventsListener".(¶Éİg8ø­„½1
+java:S3398",Move this method into "MouseEventsListener".(¶Éİg8ìæ€’Á1
 J
-java:S3398¯",Move this method into "MouseEventsListener".(Ô Œ8ø­„½1
+java:S3398²",Move this method into "MouseEventsListener".(Ô Œ8íæ€’Á1
+O
+java:S3398«",Move this method into "MouseEventsListener".(ˆ»±Ûÿÿÿÿÿ8íæ€’Á1
 Q
-java:S1068""/Remove this unused "mouseIsDown" private field.(¯¹ô¯üÿÿÿÿ8ø­„½1
+java:S1068%"/Remove this unused "mouseIsDown" private field.(¯¹ô¯üÿÿÿÿ8Šœ€’Á1
+W
+java:S1068'"5Remove this unused "featuresListeners" private field.(ÚÃ˜ÿøÿÿÿÿ8Šœ€’Á1

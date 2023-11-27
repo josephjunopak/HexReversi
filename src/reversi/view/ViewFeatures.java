@@ -1,9 +1,9 @@
-package reversi.controller;
+package reversi.view;
 
 
 import reversi.model.Coord;
 
-public interface Features {
+public interface ViewFeatures {
   void passMove();
 
   void playMove(Coord coord);

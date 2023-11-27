@@ -5,6 +5,8 @@ import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.swing.JPanel;
@@ -34,7 +36,7 @@ public class HexReversiPanel extends JPanel {
 
   private boolean mouseIsDown;
   private final int boardSize;
-
+  private final List<ViewFeatures> featuresListeners;
   // tracks the indices of the selected cell with where x is column, y is row as integers.
   private Coord selectedCell;
 
@@ -51,7 +53,7 @@ public class HexReversiPanel extends JPanel {
   public HexReversiPanel(ReadonlyReversi model) {
     this.model = Objects.requireNonNull(model);
     this.boardSize = (this.model.getBoardHeight() + 1) / 2;
-    MouseEventsListener listener = new MouseEventsListener();
+    this.featuresListeners = new ArrayList<>();MouseEventsListener listener = new MouseEventsListener();
     this.addMouseListener(listener);
     this.addMouseMotionListener(listener);
     this.setFocusable(true); // make the panel focusable

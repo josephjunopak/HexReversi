@@ -37,3 +37,7 @@ G
 strategy-transcript.txt,1/1/1123ed799e5aaf6bff95e8ab183fa67b85af93dd
 H
 src/META-INF/MANIFEST.MF,e/4/e4b1fd2293ba1e598e6bec4e0ee3b6b6851eb5a2
+R
+"src/reversi/view/ViewFeatures.java,f/f/fff05b0760ac6828e666f16289ce953f38ee538f
+V
+&src/reversi/controller/Controller.java,1/d/1d5338b34e48ed306b8ab14fb295ebc74516015a
