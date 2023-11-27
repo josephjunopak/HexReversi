@@ -2,6 +2,8 @@ package reversi.model;
 
 import java.util.List;
 
+import reversi.controller.Player;
+
 /**
  * A model mock for hex reversi that keeps a transcript of moves that are deemed valid or invalid
  * by the real HexReversi model. It also forces the move (6, 3) to be the only valid move at all
@@ -36,7 +38,7 @@ public class MockReversi implements ReadonlyReversi {
    * @return True if the given coord is a legal move for the given player
    */
   @Override
-  public boolean isMoveLegal(Player player, Coord coord) {
+  public boolean isMoveLegal(PlayerPiece player, Coord coord) {
     if (this.realModel.isMoveLegal(player, coord)) {
       valid_moves.append(System.lineSeparator());
       valid_moves.append(coord.toString());
@@ -48,6 +50,11 @@ public class MockReversi implements ReadonlyReversi {
     return (coord.equals(Coord.coordAt(6, 3)));
   }
 
+  @Override
+  public PlayerPiece getPiece(Player player) {
+    return null;
+  }
+
 
   /**
    * Gives the current player turn.
@@ -56,7 +63,7 @@ public class MockReversi implements ReadonlyReversi {
    * @throws IllegalStateException if the game hasn't started
    */
   @Override
-  public Player getCurrentPlayer() throws IllegalStateException {
+  public PlayerPiece getCurrentPlayer() throws IllegalStateException {
     return realModel.getCurrentPlayer();
   }
 
@@ -69,7 +76,7 @@ public class MockReversi implements ReadonlyReversi {
    * @throws IllegalArgumentException if the row or column is invalid
    */
   @Override
-  public Player getPlayerAtCell(Coord coord)
+  public PlayerPiece getPlayerAtCell(Coord coord)
           throws IllegalArgumentException, IllegalStateException {
     return realModel.getPlayerAtCell(coord);
   }
@@ -106,7 +113,7 @@ public class MockReversi implements ReadonlyReversi {
    * @throws IllegalStateException if the game hasn't started yet
    */
   @Override
-  public boolean canPlayerMove(Player player) throws IllegalStateException {
+  public boolean canPlayerMove(PlayerPiece player) throws IllegalStateException {
     return this.realModel.canPlayerMove(player);
   }
 
@@ -143,7 +150,7 @@ public class MockReversi implements ReadonlyReversi {
    * @throws IllegalStateException    If the game hasn't started.
    */
   @Override
-  public int getPlayerScore(Player player) throws IllegalArgumentException, IllegalStateException {
+  public int getPlayerScore(PlayerPiece player) throws IllegalArgumentException, IllegalStateException {
     return this.realModel.getPlayerScore(player);
   }
 
@@ -151,7 +158,7 @@ public class MockReversi implements ReadonlyReversi {
    * Returns a copy of the current game board of Reversi.
    */
   @Override
-  public List<List<Player>> copyBoard() {
+  public List<List<PlayerPiece>> copyBoard() {
     return this.realModel.copyBoard();
   }
 

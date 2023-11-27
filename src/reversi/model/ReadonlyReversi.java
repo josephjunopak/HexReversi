@@ -2,6 +2,8 @@ package reversi.model;
 
 import java.util.List;
 
+import reversi.controller.Player;
+
 /**
  * The read-only interface for reversi that only contains the observational public functions for
  * the Reversi game.
@@ -12,7 +14,7 @@ public interface ReadonlyReversi {
    * @return The color representing the current player's turn.
    * @throws IllegalStateException if the game hasn't started
    */
-  Player getCurrentPlayer() throws IllegalStateException;
+  PlayerPiece getCurrentPlayer() throws IllegalStateException;
 
   /**
    * Returns the player occupying the cell or if the cell is empty.
@@ -21,7 +23,7 @@ public interface ReadonlyReversi {
    * @throws IllegalStateException if the game hasn't started yet
    * @throws IllegalArgumentException if the row or column is invalid
    */
-  Player getPlayerAtCell(Coord coord) throws IllegalArgumentException, IllegalStateException;
+  PlayerPiece getPlayerAtCell(Coord coord) throws IllegalArgumentException, IllegalStateException;
 
   /**
    * Returns whether the cell at the given row and column is empty or not.
@@ -48,7 +50,7 @@ public interface ReadonlyReversi {
    * @return true is player can move, false if player cannot move
    * @throws IllegalStateException if the game hasn't started yet
    */
-  boolean canPlayerMove(Player player) throws IllegalStateException;
+  boolean canPlayerMove(PlayerPiece player) throws IllegalStateException;
 
   /**\
    * Gives the number of rows in the board.
@@ -73,12 +75,12 @@ public interface ReadonlyReversi {
    * @throws IllegalArgumentException If the given player is empty or null.
    * @throws IllegalStateException  If the game hasn't started.
    */
-  int getPlayerScore(Player player) throws IllegalArgumentException, IllegalStateException;
+  int getPlayerScore(PlayerPiece player) throws IllegalArgumentException, IllegalStateException;
 
   /**
    * Returns a copy of the current game board of Reversi.
    */
-  List<List<Player>> copyBoard();
+  List<List<PlayerPiece>> copyBoard();
 
   /**
    * Returns whether the given spot is a legal move for the given player. A legal move
@@ -88,5 +90,7 @@ public interface ReadonlyReversi {
    * @param coord Location on the grid to check
    * @return True if the given coord is a legal move for the given player
    */
-  boolean isMoveLegal(Player player, Coord coord);
+  boolean isMoveLegal(PlayerPiece player, Coord coord);
+
+  PlayerPiece getPiece(Player player);
 }

@@ -1,6 +1,6 @@
 package reversi.strategy;
 
-import reversi.model.Player;
+import reversi.model.PlayerPiece;
 import reversi.model.Coord;
 import reversi.model.ReadonlyReversi;
 
@@ -18,7 +18,7 @@ public class CaptureMax implements ReversiStrategy {
    * @param forWhom the player in the model whose is moving.
    * @return Coord that will flip the most pieces
    */
-  public Coord chooseMove(ReadonlyReversi model, Player forWhom) {
+  public Coord chooseMove(ReadonlyReversi model, PlayerPiece forWhom) {
     int maxFlips = -1;
     Coord optimalMove = null;
 
@@ -56,7 +56,7 @@ public class CaptureMax implements ReversiStrategy {
    * @return  the depth of the next piece of the same color, or -1 if there is a gap or no piece of
    *          the same color.
    */
-  private int samePieceInDirection(Player player, ReadonlyReversi model, Coord coord, int dir) {
+  private int samePieceInDirection(PlayerPiece player, ReadonlyReversi model, Coord coord, int dir) {
     int depth = 1;
     int current_row = coord.row;
     int current_col = coord.col;
@@ -98,7 +98,7 @@ public class CaptureMax implements ReversiStrategy {
         default:
           return -1;
       }
-      Player player_at_cell;
+      PlayerPiece player_at_cell;
       // Terminate loop if the cell reaches an empty cell or out-of-bounds
       try {
         player_at_cell = model.getPlayerAtCell(Coord.coordAt(current_row, current_col));
@@ -106,7 +106,7 @@ public class CaptureMax implements ReversiStrategy {
       catch (IllegalArgumentException e) {
         return -1;
       }
-      if (player_at_cell == Player.EMPTY) {
+      if (player_at_cell == PlayerPiece.EMPTY) {
         return -1;
       }
       // if the loop finds another cell with the same color piece, return the depth of that piece

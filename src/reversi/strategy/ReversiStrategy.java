@@ -1,6 +1,6 @@
 package reversi.strategy;
 
-import reversi.model.Player;
+import reversi.model.PlayerPiece;
 import reversi.model.Coord;
 import reversi.model.ReadonlyReversi;
 
@@ -18,5 +18,5 @@ public interface ReversiStrategy {
    * @return the coordinates of the upper-left most move that satisfies the strategy, or null if
    *         the player chooses to pass.
    */
-  Coord chooseMove(ReadonlyReversi model, Player forWhom);
+  Coord chooseMove(ReadonlyReversi model, PlayerPiece forWhom);
 }

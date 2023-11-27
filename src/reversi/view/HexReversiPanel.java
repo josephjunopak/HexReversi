@@ -23,7 +23,7 @@ import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 
 import reversi.model.Coord;
-import reversi.model.Player;
+import reversi.model.PlayerPiece;
 import reversi.model.ReadonlyReversi;
 
 
@@ -36,7 +36,7 @@ public class HexReversiPanel extends JPanel {
 
   private boolean mouseIsDown;
   private final int boardSize;
-  private final List<ViewFeatures> featuresListeners;
+  private final List<PlayerActions> featuresListeners;
   // tracks the indices of the selected cell with where x is column, y is row as integers.
   private Coord selectedCell;
 
@@ -53,7 +53,8 @@ public class HexReversiPanel extends JPanel {
   public HexReversiPanel(ReadonlyReversi model) {
     this.model = Objects.requireNonNull(model);
     this.boardSize = (this.model.getBoardHeight() + 1) / 2;
-    this.featuresListeners = new ArrayList<>();MouseEventsListener listener = new MouseEventsListener();
+    this.featuresListeners = new ArrayList<>();
+    MouseEventsListener listener = new MouseEventsListener();
     this.addMouseListener(listener);
     this.addMouseMotionListener(listener);
     this.setFocusable(true); // make the panel focusable
@@ -81,8 +82,8 @@ public class HexReversiPanel extends JPanel {
     g2d.setTransform(oldTransform);
   }
 
-  private void drawPlayer(Graphics2D g2d, Point2D center, Player player) {
-    if (player == Player.BLACK) {
+  private void drawPlayer(Graphics2D g2d, Point2D center, PlayerPiece player) {
+    if (player == PlayerPiece.BLACK) {
       g2d.setColor(Color.black);
     }
     else {
@@ -104,8 +105,8 @@ public class HexReversiPanel extends JPanel {
       for (int col = 0; col < this.model.getRowWidth(row); col++) {
         Point2D center = this.convertIndexToCoords(Coord.coordAt(row, col));
         this.drawHexagon(g2d, center, CELL_HEIGHT / 2, Color.gray);
-        Player cell =  this.model.getPlayerAtCell(Coord.coordAt(row, col));
-        if (cell != Player.EMPTY) {
+        PlayerPiece cell =  this.model.getPlayerAtCell(Coord.coordAt(row, col));
+        if (cell != PlayerPiece.EMPTY) {
           this.drawPlayer(g2d, center, cell);
         }
         else if (this.selectedCell != null
@@ -182,6 +183,10 @@ public class HexReversiPanel extends JPanel {
     return cellIndex.col >= 0 && cellIndex.col < this.model.getRowWidth(cellIndex.row);
   }
 
+  public void addFeatureListener(PlayerActions features) {
+    this.featuresListeners.add(features);
+  }
+
   private class KeyEventsListener implements KeyListener {
 
     @Override
@@ -194,17 +199,23 @@ public class HexReversiPanel extends JPanel {
     public void keyPressed(KeyEvent e) {
       int keyCode = e.getKeyCode();
       if (keyCode == KeyEvent.VK_ENTER) {
-        Player player = HexReversiPanel.this.model.getCurrentPlayer();
+        PlayerPiece player = HexReversiPanel.this.model.getCurrentPlayer();
         if (selectedCell != null) {
-          System.out.println(player + " moves to " + selectedCell);
+          for (PlayerActions actions: featuresListeners) {
+            actions.playMove(selectedCell);
+          }
+//          System.out.println(player + " moves to " + selectedCell);
         }
         else {
           System.out.println("Please select a cell");
         }
       }
       if (keyCode == KeyEvent.VK_P) {
-        Player player = HexReversiPanel.this.model.getCurrentPlayer();
-        System.out.println(player + " passes");
+        PlayerPiece player = HexReversiPanel.this.model.getCurrentPlayer();
+        for (PlayerActions actions: featuresListeners) {
+          actions.passMove();
+        }
+//        System.out.println(player + " passes");
       }
     }
 

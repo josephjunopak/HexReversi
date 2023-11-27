@@ -10,7 +10,7 @@ import java.util.List;
 import reversi.model.Coord;
 import reversi.model.HexReversi;
 import reversi.model.MockReversi;
-import reversi.model.Player;
+import reversi.model.PlayerPiece;
 import reversi.model.Reversi;
 import reversi.strategy.CaptureMax;
 import reversi.view.ReversiTextualView;
@@ -26,8 +26,8 @@ public class HexReversiTest {
    */
   @Test
   public void testStartGameGrid() {
-    Reversi model = new HexReversi();
-    model.startGame(4);
+    Reversi model = new HexReversi(4);
+    model.startGame();
     Assert.assertEquals(7, model.getBoardHeight());
     for (int row = 0; row < model.getBoardHeight(); row++) {
       if (row < 4) {
@@ -64,11 +64,11 @@ public class HexReversiTest {
    */
   @Test
   public void testStartGameAfterAlreadyStarted() {
-    Reversi model = new HexReversi();
-    model.startGame(4);
+    Reversi model = new HexReversi(4);
+    model.startGame();
 
     Assert.assertThrows(IllegalStateException.class,
-        () -> model.startGame(4));
+        () -> model.startGame());
   }
 
   /**
@@ -77,9 +77,8 @@ public class HexReversiTest {
    */
   @Test
   public void testStartGameWithZeroBoardSize() {
-    Reversi model = new HexReversi();
     Assert.assertThrows(IllegalArgumentException.class,
-        () -> model.startGame(0));
+        () -> new HexReversi(0));
   }
 
   /**
@@ -88,10 +87,8 @@ public class HexReversiTest {
    */
   @Test
   public void testStartGameWithNegativeBoardSize() {
-    Reversi model = new HexReversi();
-
     Assert.assertThrows(IllegalArgumentException.class,
-        () -> model.startGame(-1));
+            () -> new HexReversi(-1));
   }
 
   /**
@@ -100,10 +97,8 @@ public class HexReversiTest {
    */
   @Test
   public void testStartGameWithBoardSizeOne() {
-    Reversi model = new HexReversi();
-
     Assert.assertThrows(IllegalArgumentException.class,
-        () -> model.startGame(1));
+            () -> new HexReversi(1));
   }
 
   /**
@@ -115,7 +110,7 @@ public class HexReversiTest {
     Reversi model = new HexReversi();
     model.startGame(4);
 
-    Assert.assertEquals(model.getCurrentPlayer(), Player.BLACK);
+    Assert.assertEquals(model.getCurrentPlayer(), PlayerPiece.BLACK);
   }
 
   @Test
@@ -136,7 +131,7 @@ public class HexReversiTest {
     model.makeMove(Coord.coordAt(2, 4));
     model.makeMove(Coord.coordAt(4, 3));
     model.makeMove(Coord.coordAt(6, 3));
-    Assert.assertTrue(model.canPlayerMove(Player.BLACK));
+    Assert.assertTrue(model.canPlayerMove(PlayerPiece.BLACK));
   }
 
   @Test
@@ -168,9 +163,9 @@ public class HexReversiTest {
 
   @Test
   public void testBlackMovesFirst() {
-    Reversi model = new HexReversi();
-    model.startGame(6);
-    Assert.assertEquals(Player.BLACK, model.getCurrentPlayer());
+    Reversi model = new HexReversi(6);
+    model.startGame();
+    Assert.assertEquals(PlayerPiece.BLACK, model.getCurrentPlayer());
   }
 
   @Test
@@ -179,7 +174,7 @@ public class HexReversiTest {
     model.startGame(3);
     Assert.assertThrows(IllegalStateException.class,
         () -> model.makeMove(Coord.coordAt(1, 1)));
-    Assert.assertEquals(Player.BLACK, model.getCurrentPlayer());
+    Assert.assertEquals(PlayerPiece.BLACK, model.getCurrentPlayer());
   }
 
   @Test
@@ -234,17 +229,17 @@ public class HexReversiTest {
     Reversi model = new HexReversi();
     model.startGame(4);
     model.passTurn();
-    Assert.assertEquals(model.getCurrentPlayer(), Player.WHITE);
+    Assert.assertEquals(model.getCurrentPlayer(), PlayerPiece.WHITE);
     model.passTurn();
-    Assert.assertEquals(model.getCurrentPlayer(), Player.BLACK);
+    Assert.assertEquals(model.getCurrentPlayer(), PlayerPiece.BLACK);
     Assert.assertTrue(model.isGameOver());
   }
 
   @Test
   public void testCaptureMaxStrategyPass() {
-    Reversi model = new HexReversi();
-    model.startGame(2);
-    Coord optimalMove = new CaptureMax().chooseMove(model, Player.BLACK);
+    Reversi model = new HexReversi(2);
+    model.startGame();
+    Coord optimalMove = new CaptureMax().chooseMove(model, PlayerPiece.BLACK);
     Assert.assertNull(optimalMove);
   }
 
@@ -253,27 +248,27 @@ public class HexReversiTest {
     Reversi model = new HexReversi();
     model.startGame(4);
     Coord expectedMove = Coord.coordAt(1, 2);
-    Coord optimalMove = new CaptureMax().chooseMove(model, Player.BLACK);
+    Coord optimalMove = new CaptureMax().chooseMove(model, PlayerPiece.BLACK);
     Assert.assertEquals(optimalMove, expectedMove);
   }
 
   @Test
   public void testContinueInvalidBoard() {
-    HexReversi model = new HexReversi();
-    List<List<Player>> board = new ArrayList<>();
+    HexReversi model = new HexReversi(2);
+    List<List<PlayerPiece>> board = new ArrayList<>();
     Assert.assertThrows(IllegalArgumentException.class,
-        () -> model.continueGame(null, Player.BLACK));
+        () -> model.continueGame(null, PlayerPiece.BLACK));
     Assert.assertThrows(IllegalArgumentException.class,
-        () -> model.continueGame(board, Player.BLACK));
-    board.add(Collections.nCopies(1, Player.EMPTY));
-    board.add(Collections.nCopies(3, Player.EMPTY));
-    board.add(Collections.nCopies(2, Player.EMPTY));
+        () -> model.continueGame(board, PlayerPiece.BLACK));
+    board.add(Collections.nCopies(1, PlayerPiece.EMPTY));
+    board.add(Collections.nCopies(3, PlayerPiece.EMPTY));
+    board.add(Collections.nCopies(2, PlayerPiece.EMPTY));
     Assert.assertThrows(IllegalArgumentException.class,
-        () -> model.continueGame(board, Player.BLACK));
-    board.set(0, Collections.nCopies(2, Player.EMPTY));
+        () -> model.continueGame(board, PlayerPiece.BLACK));
+    board.set(0, Collections.nCopies(2, PlayerPiece.EMPTY));
     Assert.assertThrows(IllegalArgumentException.class,
-        () -> model.continueGame(board, Player.EMPTY));
-    model.continueGame(board, Player.BLACK);
+        () -> model.continueGame(board, PlayerPiece.EMPTY));
+    model.continueGame(board, PlayerPiece.BLACK);
     Assert.assertTrue(model.isGameOver());
   }
 
@@ -292,8 +287,8 @@ public class HexReversiTest {
   public void testMockModelValidTranscript() {
     HexReversi model = new HexReversi();
     MockReversi mock = new MockReversi(model);
-    model.startGame(3);
-    Coord mockCoord = new CaptureMax().chooseMove(mock, Player.BLACK);
+    model.startGame();
+    Coord mockCoord = new CaptureMax().chooseMove(mock, PlayerPiece.BLACK);
     System.out.println(mock.getValidTranscript());
     System.out.println(mock.getInvalidTranscript());
     // only valid moves should be (0, 1); (1, 0); (1, 3); (3, 0); (3, 3); (4, 1)
@@ -308,10 +303,10 @@ public class HexReversiTest {
 
   @Test
   public void testMockModelForcedMove() {
-    HexReversi model = new HexReversi();
+    HexReversi model = new HexReversi(4);
     MockReversi mock = new MockReversi(model);
-    model.startGame(4);
-    Coord mockCoord = new CaptureMax().chooseMove(mock, Player.BLACK);
+    model.startGame();
+    Coord mockCoord = new CaptureMax().chooseMove(mock, PlayerPiece.BLACK);
     Assert.assertEquals(Coord.coordAt(6, 3), mockCoord);
   }
 }

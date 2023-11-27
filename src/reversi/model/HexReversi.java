@@ -2,7 +2,12 @@ package reversi.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import reversi.controller.Player;
 
 /**
  * An implementation that utilizes Reversi interface. This version
@@ -30,7 +35,7 @@ public class HexReversi implements Reversi {
 
   // 0-th arraylist inside cellGrid is the top row
   // 0-th element of an arrayList (row), is the most left cell
-  private List<List<Player>> cellGrid;
+  private List<List<PlayerPiece>> cellGrid;
   
   // True is game is started
   // False is game not yet started
@@ -38,16 +43,37 @@ public class HexReversi implements Reversi {
   
   // States which player's turn it is
   /** invariant * : currentTurn is never EMPTY. */
-  private Player currentTurn;
+  private PlayerPiece currentTurn;
 
   // true if the last player passed their turn.
   private int consecutivePasses;
+
+  private final List<ModelFeatures> features;
+
+  private Map<Player, PlayerPiece> playerMap;
 
   /**
    * Constructor for HexReversi.
    */
   public HexReversi() {
     gameStarted = false;
+    features = new ArrayList<>();
+    this.playerMap = new HashMap<>();
+
+    if (boardSize < 2) {
+      throw new IllegalArgumentException("Board size is too small.");
+    }
+
+    // # of rows = 2 * boardSize - 1
+    this.cellGrid = new ArrayList<>(2 * boardSize - 1);
+
+    for (int rowSize = boardSize; rowSize < 2 * boardSize - 1; rowSize++) {
+      this.cellGrid.add(new ArrayList<>(Collections.nCopies(rowSize, PlayerPiece.EMPTY)));
+    }
+
+    for (int rowSize = 2 * boardSize - 1; rowSize >= boardSize; rowSize--) {
+      this.cellGrid.add(new ArrayList<>(Collections.nCopies(rowSize, PlayerPiece.EMPTY)));
+    }
   }
 
   /**
@@ -59,13 +85,13 @@ public class HexReversi implements Reversi {
    *                                  current board is invalid.
    * @throws IllegalStateException  if the game has already started
    */
-  public void continueGame(List<List<Player>> currentBoard, Player currentPlayer)
+  public void continueGame(List<List<PlayerPiece>> currentBoard, PlayerPiece currentPlayer)
           throws IllegalArgumentException {
     if (this.gameStarted) {
       throw new IllegalStateException("Game has already started");
     }
     this.validateBoard(currentBoard);
-    if (currentPlayer == null || currentPlayer == Player.EMPTY) {
+    if (currentPlayer == null || currentPlayer == PlayerPiece.EMPTY) {
       throw new IllegalArgumentException("Player cannot be null or empty");
     }
     this.cellGrid = currentBoard;
@@ -74,7 +100,7 @@ public class HexReversi implements Reversi {
     this.gameStarted = true;
   }
 
-  private void validateBoard(List<List<Player>> currentBoard) throws IllegalArgumentException {
+  private void validateBoard(List<List<PlayerPiece>> currentBoard) throws IllegalArgumentException {
     if (currentBoard == null) {
       throw new IllegalArgumentException("Board cannot be null");
     }
@@ -114,15 +140,6 @@ public class HexReversi implements Reversi {
     if (this.gameStarted) {
       throw new IllegalStateException("Game already started");
     }
-    // # of rows = 2 * boardSize - 1
-    this.cellGrid = new ArrayList<>(2 * boardSize - 1);
-
-    for (int rowSize = boardSize; rowSize < 2 * boardSize - 1; rowSize++) {
-      this.cellGrid.add(new ArrayList<>(Collections.nCopies(rowSize, Player.EMPTY)));
-    }
-    for (int rowSize = 2 * boardSize - 1; rowSize >= boardSize; rowSize--) {
-      this.cellGrid.add(new ArrayList<>(Collections.nCopies(rowSize, Player.EMPTY)));
-    }
 
     this.gameStarted = true;
     this.consecutivePasses = 0;
@@ -131,11 +148,11 @@ public class HexReversi implements Reversi {
     initPlayersOnGrid();
 
     //Black player moves first
-    this.currentTurn = Player.BLACK;
+    this.currentTurn = PlayerPiece.BLACK;
   }
 
   @Override
-  public List<List<Player>> copyBoard() {
+  public List<List<PlayerPiece>> copyBoard() {
     this.verifyGameStarted();
 
     return new ArrayList<>(cellGrid);
@@ -149,16 +166,16 @@ public class HexReversi implements Reversi {
     int center = (this.getBoardHeight() - 1) / 2;
 
     //Row above middle
-    this.cellGrid.get(center - 1).set(center - 1, Player.BLACK); //left
-    this.cellGrid.get(center - 1).set(center, Player.WHITE); //right
+    this.cellGrid.get(center - 1).set(center - 1, PlayerPiece.BLACK); //left
+    this.cellGrid.get(center - 1).set(center, PlayerPiece.WHITE); //right
 
     //Middle row
-    this.cellGrid.get(center).set(center - 1, Player.WHITE); //left
-    this.cellGrid.get(center).set(center + 1, Player.BLACK); //right
+    this.cellGrid.get(center).set(center - 1, PlayerPiece.WHITE); //left
+    this.cellGrid.get(center).set(center + 1, PlayerPiece.BLACK); //right
 
     //Row below middle
-    this.cellGrid.get(center + 1).set(center - 1, Player.BLACK); //left
-    this.cellGrid.get(center + 1).set(center, Player.WHITE); //right
+    this.cellGrid.get(center + 1).set(center - 1, PlayerPiece.BLACK); //left
+    this.cellGrid.get(center + 1).set(center, PlayerPiece.WHITE); //right
   }
 
   private void verifyGameStarted() throws IllegalStateException {
@@ -192,7 +209,7 @@ public class HexReversi implements Reversi {
    * @return  the depth of the next piece of the same color, or -1 if there is a gap or no piece of
    *          the same color.
    */
-  private int samePieceInDirection(Player player, Coord coord, int dir) {
+  private int samePieceInDirection(PlayerPiece player, Coord coord, int dir) {
     int depth = 1;
     int current_row = coord.row;
     int current_col = coord.col;
@@ -233,14 +250,14 @@ public class HexReversi implements Reversi {
         default:
           return -1;
       }
-      Player player_at_cell;
+      PlayerPiece player_at_cell;
       try {
         player_at_cell = this.getPlayerAtCell(Coord.coordAt(current_row, current_col));
       }
       catch (IllegalArgumentException e) {
         return -1;
       }
-      if (player_at_cell == Player.EMPTY) {
+      if (player_at_cell == PlayerPiece.EMPTY) {
         return -1;
       }
       if (player == player_at_cell) {
@@ -259,7 +276,7 @@ public class HexReversi implements Reversi {
    * @param coord Location on the grid to check
    * @return True if the given coord is a legal move for the given player
    */
-  public boolean isMoveLegal(Player player, Coord coord) {
+  public boolean isMoveLegal(PlayerPiece player, Coord coord) {
     if (!this.isCellEmpty(coord)) {
       return false;
     }
@@ -271,6 +288,11 @@ public class HexReversi implements Reversi {
     return false;
   }
 
+  @Override
+  public PlayerPiece getPiece(Player player) {
+    return this.playerMap.get(player);
+  }
+
   /**
    * Helper function for flipping pieces in a direction from the original placement position.
    *
@@ -280,7 +302,7 @@ public class HexReversi implements Reversi {
    * @param dir    the direction on the hex grid to flip pieces in
    *               left and incrementing clockwise.
    */
-  private void flipPiecesInDirection(Player player, Coord coord, int depth, int dir) {
+  private void flipPiecesInDirection(PlayerPiece player, Coord coord, int depth, int dir) {
     int current_row = coord.row;
     int current_col = coord.col;
     while (depth-- > 0) {
@@ -360,8 +382,11 @@ public class HexReversi implements Reversi {
       }
     }
 
-    this.currentTurn = (this.currentTurn == Player.BLACK) ? Player.WHITE : Player.BLACK;
+    this.currentTurn = (this.currentTurn == PlayerPiece.BLACK) ? PlayerPiece.WHITE : PlayerPiece.BLACK;
     this.consecutivePasses = 0;
+    for (ModelFeatures listeners: this.features) {
+      listeners.yourTurn();
+    }
   }
 
   /**
@@ -371,7 +396,7 @@ public class HexReversi implements Reversi {
    * @throws IllegalStateException if the game hasn't started
    */
   @Override
-  public Player getCurrentPlayer() throws IllegalStateException {
+  public PlayerPiece getCurrentPlayer() throws IllegalStateException {
     this.verifyGameStarted();
     return this.currentTurn;
   }
@@ -388,7 +413,7 @@ public class HexReversi implements Reversi {
    * @throws IllegalArgumentException if the row or column is invalid
    */
   @Override
-  public Player getPlayerAtCell(Coord coord)
+  public PlayerPiece getPlayerAtCell(Coord coord)
           throws IllegalArgumentException, IllegalStateException {
     this.verifyGameStarted();
     this.verifyCoordinates(coord);
@@ -413,7 +438,7 @@ public class HexReversi implements Reversi {
     this.verifyGameStarted();
     this.verifyCoordinates(coord);
 
-    return getPlayerAtCell(coord) == Player.EMPTY;
+    return getPlayerAtCell(coord) == PlayerPiece.EMPTY;
   }
 
   /**
@@ -424,7 +449,7 @@ public class HexReversi implements Reversi {
    */
   @Override
   public boolean isGameOver() throws IllegalStateException {
-    return !(canPlayerMove(Player.BLACK) || canPlayerMove(Player.WHITE))
+    return !(canPlayerMove(PlayerPiece.BLACK) || canPlayerMove(PlayerPiece.WHITE))
             || this.consecutivePasses >= 2;
   }
 
@@ -436,7 +461,7 @@ public class HexReversi implements Reversi {
    * @throws IllegalStateException if the game hasn't started yet
    */
   @Override
-  public boolean canPlayerMove(Player player) throws IllegalStateException {
+  public boolean canPlayerMove(PlayerPiece player) throws IllegalStateException {
     this.verifyGameStarted();
     for (int row = 0; row < this.getBoardHeight(); row++) {
       for (int col = 0; col < this.getRowWidth(row); col++) {
@@ -476,15 +501,15 @@ public class HexReversi implements Reversi {
   }
 
   @Override
-  public int getPlayerScore(Player player) throws IllegalArgumentException, IllegalStateException {
+  public int getPlayerScore(PlayerPiece player) throws IllegalArgumentException, IllegalStateException {
     this.verifyGameStarted();
-    if (player == null || player == Player.EMPTY) {
+    if (player == null || player == PlayerPiece.EMPTY) {
       throw new IllegalArgumentException("Invalid player given.");
     }
 
     int score = 0;
-    for (List<Player> tiles : this.cellGrid) {
-      for (Player value : tiles) {
+    for (List<PlayerPiece> tiles : this.cellGrid) {
+      for (PlayerPiece value : tiles) {
         if (value == player) {
           score += 1;
         }
@@ -509,7 +534,28 @@ public class HexReversi implements Reversi {
     if (this.consecutivePasses >= 2) {
       throw new IllegalStateException("Game is already over");
     }
-    this.currentTurn = (this.currentTurn == Player.BLACK) ? Player.WHITE : Player.BLACK;
+    this.currentTurn = (this.currentTurn == PlayerPiece.BLACK) ? PlayerPiece.WHITE : PlayerPiece.BLACK;
     this.consecutivePasses += 1;
+    for (ModelFeatures listeners: this.features) {
+      listeners.yourTurn();
+    }
+  }
+
+  @Override
+  public void addFeatures(ModelFeatures features) {
+    this.features.add(features);
+  }
+
+  @Override
+  public void addPlayer(Player player) {
+    if (this.playerMap.isEmpty()) {
+      this.playerMap.put(Objects.requireNonNull(player), PlayerPiece.BLACK);
+    }
+    else if (this.playerMap.size() == 1) {
+      this.playerMap.put(Objects.requireNonNull(player), PlayerPiece.WHITE);
+    }
+    else {
+      throw new IllegalStateException("Game is already full.");
+    }
   }
 }

@@ -1,5 +1,7 @@
 package reversi.model;
 
+import reversi.controller.Player;
+
 /**
  * Represents the primary model interface for playing a game of reversi. The game support 2 players
  * and a two-dimensional grid.
@@ -13,7 +15,7 @@ public interface Reversi extends ReadonlyReversi {
    * @throws IllegalArgumentException if the board size is less than 1
    * @throws IllegalStateException if the game has already started
    */
-  void startGame(int boardSize) throws IllegalArgumentException, IllegalStateException;
+  void startGame() throws IllegalArgumentException, IllegalStateException;
 
   /**
    * Moves a piece to the requested spot based on the row and column for the current player.
@@ -30,4 +32,8 @@ public interface Reversi extends ReadonlyReversi {
    * @throws IllegalStateException if the game hasn't started yet
    */
   void passTurn() throws IllegalStateException;
+
+  void addFeatures(ModelFeatures features);
+
+  void addPlayer(Player player);
 }

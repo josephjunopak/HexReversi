@@ -1,6 +1,7 @@
 package reversi.view;
 
-import javax.swing.JFrame;
+import javax.swing.*;
+
 import reversi.model.ReadonlyReversi;
 
 /**
@@ -8,6 +9,7 @@ import reversi.model.ReadonlyReversi;
  * This GUI contains a JPanel to represent the game state of our board.
  */
 public class HexReversiGUIView extends JFrame implements GUIView  {
+  private final HexReversiPanel panel;
 
   /**
    * Constructor for our GUIView which takes this modesl
@@ -17,13 +19,28 @@ public class HexReversiGUIView extends JFrame implements GUIView  {
    */
   public HexReversiGUIView(ReadonlyReversi model) {
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    HexReversiPanel panel = new HexReversiPanel(model);
-    this.add(panel);
+    this.panel = new HexReversiPanel(model);
+    this.add(this.panel);
     this.pack();
   }
 
   @Override
   public void display(boolean show) {
     this.setVisible(show);
+  }
+
+  @Override
+  public void addFeatureListener(PlayerActions features) {
+    this.panel.addFeatureListener(features);
+  }
+
+  public void showInvalidMoveMessage(String msg) {
+    JOptionPane.showMessageDialog(this.panel, msg);
+  }
+
+  @Override
+  public void refresh() {
+    super.revalidate();
+    super.repaint();
   }
 }
