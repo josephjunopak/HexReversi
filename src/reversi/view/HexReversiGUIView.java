@@ -12,7 +12,7 @@ public class HexReversiGUIView extends JFrame implements GUIView  {
   private final HexReversiPanel panel;
 
   /**
-   * Constructor for our GUIView which takes this modesl
+   * Constructor for our GUIView which takes this models
    * and creates a JPanel.
    *
    * @param model Reversi model

@@ -45,8 +45,8 @@ public class HexReversiTest {
    */
   @Test
   public void testTextualRendering() {
-    Reversi model = new HexReversi();
-    model.startGame(4);
+    Reversi model = new HexReversi(4);
+    model.startGame();
     ReversiTextualView view = new ReversiTextualView(model);
 
     Assert.assertTrue(view.toString().contains(
@@ -107,16 +107,16 @@ public class HexReversiTest {
    */
   @Test
   public void testGetCurrentPlayerAtStart() {
-    Reversi model = new HexReversi();
-    model.startGame(4);
+    Reversi model = new HexReversi(4);
+    model.startGame();
 
     Assert.assertEquals(model.getCurrentPlayer(), PlayerPiece.BLACK);
   }
 
   @Test
   public void testMakeMoveInvalidMove() {
-    Reversi model = new HexReversi();
-    model.startGame(6);
+    Reversi model = new HexReversi(6);
+    model.startGame();
     model.makeMove(Coord.coordAt(3, 4));
     Assert.assertThrows(IllegalStateException.class,
         () -> model.makeMove(Coord.coordAt(3, 3)));
@@ -124,8 +124,8 @@ public class HexReversiTest {
 
   @Test
   public void testMakeMoveInvalidMovesPlayers() {
-    Reversi model = new HexReversi();
-    model.startGame(6);
+    Reversi model = new HexReversi(6);
+    model.startGame();
 
     model.makeMove(Coord.coordAt(3, 4));
     model.makeMove(Coord.coordAt(2, 4));
@@ -136,16 +136,16 @@ public class HexReversiTest {
 
   @Test
   public void testBasicGameOver() {
-    Reversi model = new HexReversi();
-    model.startGame(2);
+    Reversi model = new HexReversi(2);
+    model.startGame();
     Assert.assertTrue("A size 2 game starts with no legal moves.", model.isGameOver());
   }
 
   @Test
   public void endNonTrivialGame() {
-    Reversi model = new HexReversi();
+    Reversi model = new HexReversi(3);
     TextView view = new ReversiTextualView(model);
-    model.startGame(3);
+    model.startGame();
     model.makeMove(Coord.coordAt(1, 0));
     model.makeMove(Coord.coordAt(1, 3));
     model.makeMove(Coord.coordAt(3, 3));
@@ -170,8 +170,8 @@ public class HexReversiTest {
 
   @Test
   public void testInvalidMoveOnExistingPiece() {
-    Reversi model = new HexReversi();
-    model.startGame(3);
+    Reversi model = new HexReversi(3);
+    model.startGame();
     Assert.assertThrows(IllegalStateException.class,
         () -> model.makeMove(Coord.coordAt(1, 1)));
     Assert.assertEquals(PlayerPiece.BLACK, model.getCurrentPlayer());
@@ -179,8 +179,8 @@ public class HexReversiTest {
 
   @Test
   public void testInvalidMoveOutOfBounds() {
-    Reversi model = new HexReversi();
-    model.startGame(3);
+    Reversi model = new HexReversi(3);
+    model.startGame();
     Assert.assertThrows(IllegalArgumentException.class,
         () -> model.makeMove(Coord.coordAt(0, 3)));
     Assert.assertThrows(IllegalArgumentException.class,
@@ -191,8 +191,8 @@ public class HexReversiTest {
 
   @Test
   public void testInvalidMoveNoPathToSameColor() {
-    Reversi model = new HexReversi();
-    model.startGame(3);
+    Reversi model = new HexReversi(3);
+    model.startGame();
     Assert.assertThrows(IllegalStateException.class,
         () -> model.makeMove(Coord.coordAt(0, 0)));
     Assert.assertThrows(IllegalStateException.class,
@@ -203,8 +203,8 @@ public class HexReversiTest {
 
   @Test
   public void testFlipMultipleLines() {
-    Reversi model = new HexReversi();
-    model.startGame(4);
+    Reversi model = new HexReversi(4);
+    model.startGame();
     TextView view = new ReversiTextualView(model);
     model.makeMove(Coord.coordAt(1, 2));
     System.out.println(view);
@@ -226,8 +226,8 @@ public class HexReversiTest {
 
   @Test
   public void testPassTurnEndsGame() {
-    Reversi model = new HexReversi();
-    model.startGame(4);
+    Reversi model = new HexReversi(4);
+    model.startGame();
     model.passTurn();
     Assert.assertEquals(model.getCurrentPlayer(), PlayerPiece.WHITE);
     model.passTurn();
@@ -245,8 +245,8 @@ public class HexReversiTest {
 
   @Test
   public void testCaptureMaxTie() {
-    Reversi model = new HexReversi();
-    model.startGame(4);
+    Reversi model = new HexReversi(4);
+    model.startGame();
     Coord expectedMove = Coord.coordAt(1, 2);
     Coord optimalMove = new CaptureMax().chooseMove(model, PlayerPiece.BLACK);
     Assert.assertEquals(optimalMove, expectedMove);
@@ -274,8 +274,8 @@ public class HexReversiTest {
 
   @Test
   public void testCaptureMaxNormalSituation() {
-    Reversi model = new HexReversi();
-    model.startGame(4);
+    Reversi model = new HexReversi(4);
+    model.startGame();
     model.makeMove(Coord.coordAt(1, 2));
     model.makeMove(Coord.coordAt(0, 2));
     Coord expectedMove = Coord.coordAt(2, 1);
@@ -285,7 +285,7 @@ public class HexReversiTest {
 
   @Test
   public void testMockModelValidTranscript() {
-    HexReversi model = new HexReversi();
+    HexReversi model = new HexReversi(3);
     MockReversi mock = new MockReversi(model);
     model.startGame();
     Coord mockCoord = new CaptureMax().chooseMove(mock, PlayerPiece.BLACK);

@@ -1,6 +1,7 @@
 package reversi.controller;
 
 import reversi.model.Coord;
+import reversi.model.ModelFeatures;
 import reversi.model.Reversi;
 import reversi.view.GUIView;
 import reversi.view.PlayerActions;
@@ -10,9 +11,14 @@ public class Controller implements PlayerActions, ModelFeatures {
 
   private final GUIView view;
 
+  private final Player player;
+
   public Controller(Reversi model, Player player, GUIView view) {
     this.model = model;
     this.view = view;
+    this.player = player;
+    model.addPlayer(player);
+    this.model.addFeatures(this);
     this.view.addFeatureListener(this);
     this.player.initializePiece();
     this.player.addListener(this);

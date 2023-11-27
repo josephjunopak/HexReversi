@@ -55,7 +55,7 @@ public class HexReversi implements Reversi {
   /**
    * Constructor for HexReversi.
    */
-  public HexReversi() {
+  public HexReversi(int boardSize) {
     gameStarted = false;
     features = new ArrayList<>();
     this.playerMap = new HashMap<>();
@@ -133,10 +133,7 @@ public class HexReversi implements Reversi {
    * @throws IllegalStateException if game has already started
    */
   @Override
-  public void startGame(int boardSize) throws IllegalArgumentException, IllegalStateException {
-    if (boardSize < 2) {
-      throw new IllegalArgumentException("Board size is too small.");
-    }
+  public void startGame() throws IllegalArgumentException, IllegalStateException {
     if (this.gameStarted) {
       throw new IllegalStateException("Game already started");
     }
@@ -481,7 +478,6 @@ public class HexReversi implements Reversi {
    */
   @Override
   public int getBoardHeight() throws IllegalStateException {
-    this.verifyGameStarted();
     return this.cellGrid.size();
   }
 
@@ -493,7 +489,6 @@ public class HexReversi implements Reversi {
    */
   @Override
   public int getRowWidth(int row) throws IllegalArgumentException, IllegalStateException {
-    this.verifyGameStarted();
     if (row < 0 || row > this.getBoardHeight()) {
       throw new IllegalArgumentException("Row number out-of-range.");
     }
