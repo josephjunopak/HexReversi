@@ -24,6 +24,7 @@ import reversi.model.Coord;
 import reversi.model.Player;
 import reversi.model.ReadonlyReversi;
 
+
 /**
  * This class represents a panel to showcase our game of Reversi.
  * Contains the logic on how the panel should be displayed.
@@ -238,6 +239,5 @@ public class HexReversiPanel extends JPanel {
       HexReversiPanel.this.repaint();
     }
   }
-
 
 }
