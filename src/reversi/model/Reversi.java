@@ -9,9 +9,8 @@ import reversi.controller.Player;
 public interface Reversi extends ReadonlyReversi {
 
   /**
-   * Starts the game with a set board size.
-   * 
-   * @param boardSize The length of an edge of the board to set to.
+   * Starts a reversi game.
+   *
    * @throws IllegalArgumentException if the board size is less than 1
    * @throws IllegalStateException if the game has already started
    */
@@ -33,7 +32,18 @@ public interface Reversi extends ReadonlyReversi {
    */
   void passTurn() throws IllegalStateException;
 
+  /**
+   * Adds a feature listener to the model, which will be notified when the game turn changes.
+   *
+   * @param features the listener which will be notified once the game turn changes.
+   */
   void addFeatures(ModelFeatures features);
 
-  void addPlayer(Player player);
+  /**
+   * Adds a player to the game, and assigns the player a piece. This method also ensures that there
+   * are a maximum of 2 players per game.
+   * @param player  The player which participates in this game.
+   * @throws IllegalStateException if the game already has 2 players.
+   */
+  void addPlayer(Player player) throws IllegalStateException;
 }

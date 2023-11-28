@@ -10,7 +10,7 @@ public class PlayerCreator {
 
   public enum PlayerType {
     HUMAN,
-    CAPTUREMAX,
+    CAPTUREMAX
   }
 
   public static Player create(Reversi model, PlayerType type) {

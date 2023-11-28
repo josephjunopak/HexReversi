@@ -8,12 +8,3 @@ public interface PlayerActions {
 
   void playMove(Coord coord);
 }
-
-/*
-In view:
-Features feature;
-
-... on button press -> features.passMove();
-                 or -> features.playMove(selected_Cell);
-
- */

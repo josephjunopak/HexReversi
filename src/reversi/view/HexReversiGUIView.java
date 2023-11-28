@@ -34,7 +34,7 @@ public class HexReversiGUIView extends JFrame implements GUIView  {
     this.panel.addFeatureListener(features);
   }
 
-  public void showInvalidMoveMessage(String msg) {
+  public void showMessage(String msg) {
     JOptionPane.showMessageDialog(this.panel, msg);
   }
 

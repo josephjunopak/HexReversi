@@ -92,5 +92,11 @@ public interface ReadonlyReversi {
    */
   boolean isMoveLegal(PlayerPiece player, Coord coord);
 
-  PlayerPiece getPiece(Player player);
+  /**
+   * Returns the piece corresponding to the given player.
+   * @param player
+   * @return the piece corresponding to the player.
+   * @throws IllegalArgumentException if the player is not part of the game.
+   */
+  PlayerPiece getPiece(Player player) throws IllegalArgumentException;
 }

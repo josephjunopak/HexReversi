@@ -53,7 +53,8 @@ public class HexReversi implements Reversi {
   private Map<Player, PlayerPiece> playerMap;
 
   /**
-   * Constructor for HexReversi.
+   * Constructor for HexReversi. The board is initialized to the hexagon grid.
+   * @param boardSize The length of an edge of the board to set to.
    */
   public HexReversi(int boardSize) {
     gameStarted = false;
@@ -122,13 +123,12 @@ public class HexReversi implements Reversi {
   }
 
   /**
-   * Starts a game of Reversi with a hex-shaped board. Takes in an integer
-   * to specify the length of each side in the board.
+   * Starts a game of Reversi with a hex-shaped board. This method adds the initial pieces onto the
+   * board and notifies the players that the game has started.
    * The invariant that the currentPlayer is not EMPTY is maintained because currentTurn is
    * initialized to BLACK when startGame() is called. An exception is thrown when any other method
    * is called before startGame().
    *
-   * @param boardSize The length of an edge of the board to set to.
    * @throws IllegalArgumentException if board size is invalid
    * @throws IllegalStateException if game has already started
    */
@@ -137,7 +137,6 @@ public class HexReversi implements Reversi {
     if (this.gameStarted) {
       throw new IllegalStateException("Game already started");
     }
-
     this.gameStarted = true;
     this.consecutivePasses = 0;
 
@@ -146,6 +145,9 @@ public class HexReversi implements Reversi {
 
     //Black player moves first
     this.currentTurn = PlayerPiece.BLACK;
+    for (ModelFeatures listeners: this.features) {
+      listeners.yourTurn();
+    }
   }
 
   @Override
@@ -287,7 +289,10 @@ public class HexReversi implements Reversi {
 
   @Override
   public PlayerPiece getPiece(Player player) {
-    return this.playerMap.get(player);
+    if (this.playerMap.containsKey(player)) {
+      return this.playerMap.get(player);
+    }
+    throw new IllegalArgumentException("Invalid player given.");
   }
 
   /**
@@ -525,8 +530,7 @@ public class HexReversi implements Reversi {
   @Override
   public void passTurn() throws IllegalStateException {
     this.verifyGameStarted();
-
-    if (this.consecutivePasses >= 2) {
+    if (this.consecutivePasses >= 2 || isGameOver()) {
       throw new IllegalStateException("Game is already over");
     }
     this.currentTurn = (this.currentTurn == PlayerPiece.BLACK) ? PlayerPiece.WHITE : PlayerPiece.BLACK;
@@ -542,7 +546,7 @@ public class HexReversi implements Reversi {
   }
 
   @Override
-  public void addPlayer(Player player) {
+  public void addPlayer(Player player) throws IllegalStateException {
     if (this.playerMap.isEmpty()) {
       this.playerMap.put(Objects.requireNonNull(player), PlayerPiece.BLACK);
     }

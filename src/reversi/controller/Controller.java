@@ -6,6 +6,10 @@ import reversi.model.Reversi;
 import reversi.view.GUIView;
 import reversi.view.PlayerActions;
 
+/**
+ * This class handles interactions from both the view and the model by implementing
+ * both features interfaces.
+ */
 public class Controller implements PlayerActions, ModelFeatures {
   private final Reversi model;
 
@@ -34,11 +38,11 @@ public class Controller implements PlayerActions, ModelFeatures {
         System.out.println("Turn passed");
       }
       catch (IllegalStateException e) {
-        view.showInvalidMoveMessage("Game hasn't started");
+        view.showMessage("Game hasn't started");
       }
     }
     else {
-      view.showInvalidMoveMessage("It's not your turn.");
+      view.showMessage("It's not your turn.");
     }
     this.view.refresh();
   }
@@ -52,14 +56,14 @@ public class Controller implements PlayerActions, ModelFeatures {
         System.out.println("Move made");
       }
       catch (IllegalArgumentException e) {
-        view.showInvalidMoveMessage("Invalid move for " + this.player.toString());
+        view.showMessage("Illegal move for " + this.player.toString());
       }
       catch (IllegalStateException e) {
-        view.showInvalidMoveMessage("Invalid move for " + this.player.toString());
+        view.showMessage("Invalid move for " + this.player.toString());
       }
     }
     else {
-      view.showInvalidMoveMessage("It's not your turn.");
+      view.showMessage("It's not your turn.");
     }
     this.view.refresh();
   }
@@ -71,8 +75,7 @@ public class Controller implements PlayerActions, ModelFeatures {
     }
     this.view.refresh();
     if (this.model.isGameOver()) {
-      view.showInvalidMoveMessage("Game is over");
-//      this.view.display(false);
+      view.showMessage("Game is over");
     }
   }
 }
