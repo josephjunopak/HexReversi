@@ -94,7 +94,7 @@ public interface ReadonlyReversi {
 
   /**
    * Returns the piece corresponding to the given player.
-   * @param player
+   * @param player Player that you want to get piece information on
    * @return the piece corresponding to the player.
    * @throws IllegalArgumentException if the player is not part of the game.
    */

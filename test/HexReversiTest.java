@@ -88,7 +88,7 @@ public class HexReversiTest {
   @Test
   public void testStartGameWithNegativeBoardSize() {
     Assert.assertThrows(IllegalArgumentException.class,
-            () -> new HexReversi(-1));
+        () -> new HexReversi(-1));
   }
 
   /**
@@ -98,7 +98,7 @@ public class HexReversiTest {
   @Test
   public void testStartGameWithBoardSizeOne() {
     Assert.assertThrows(IllegalArgumentException.class,
-            () -> new HexReversi(1));
+        () -> new HexReversi(1));
   }
 
   /**

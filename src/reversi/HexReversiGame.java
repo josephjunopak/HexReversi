@@ -1,8 +1,6 @@
 package reversi;
 
-import reversi.controller.HumanPlayer;
 import reversi.model.HexReversi;
-import reversi.model.PlayerPiece;
 import reversi.model.Reversi;
 import reversi.view.GUIView;
 import reversi.view.HexReversiGUIView;

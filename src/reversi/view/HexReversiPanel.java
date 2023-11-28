@@ -199,23 +199,19 @@ public class HexReversiPanel extends JPanel {
     public void keyPressed(KeyEvent e) {
       int keyCode = e.getKeyCode();
       if (keyCode == KeyEvent.VK_ENTER) {
-        PlayerPiece player = HexReversiPanel.this.model.getCurrentPlayer();
         if (selectedCell != null) {
           for (PlayerActions actions: featuresListeners) {
             actions.playMove(selectedCell);
           }
-//          System.out.println(player + " moves to " + selectedCell);
         }
         else {
           System.out.println("Please select a cell");
         }
       }
       if (keyCode == KeyEvent.VK_P) {
-        PlayerPiece player = HexReversiPanel.this.model.getCurrentPlayer();
         for (PlayerActions actions: featuresListeners) {
           actions.passMove();
         }
-//        System.out.println(player + " passes");
       }
     }
 

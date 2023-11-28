@@ -11,8 +11,8 @@ public interface GUIView {
   void display(boolean show);
 
   /**
-   * Adds a feature listener to the view, which notifies the listeners whenever a player action needs
-   * to be performed.
+   * Adds a feature listener to the view, which notifies the listeners
+   * whenever a player action needs to be performed.
    * @param features  The listeners that will be notified when something happens.
    */
   void addFeatureListener(PlayerActions features);

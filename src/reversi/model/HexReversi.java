@@ -384,7 +384,8 @@ public class HexReversi implements Reversi {
       }
     }
 
-    this.currentTurn = (this.currentTurn == PlayerPiece.BLACK) ? PlayerPiece.WHITE : PlayerPiece.BLACK;
+    this.currentTurn = (this.currentTurn == PlayerPiece.BLACK)
+            ? PlayerPiece.WHITE : PlayerPiece.BLACK;
     this.consecutivePasses = 0;
     for (ModelFeatures listeners: this.features) {
       listeners.yourTurn();
@@ -501,7 +502,8 @@ public class HexReversi implements Reversi {
   }
 
   @Override
-  public int getPlayerScore(PlayerPiece player) throws IllegalArgumentException, IllegalStateException {
+  public int getPlayerScore(PlayerPiece player)
+          throws IllegalArgumentException, IllegalStateException {
     this.verifyGameStarted();
     if (player == null || player == PlayerPiece.EMPTY) {
       throw new IllegalArgumentException("Invalid player given.");
@@ -533,7 +535,8 @@ public class HexReversi implements Reversi {
     if (this.consecutivePasses >= 2 || isGameOver()) {
       throw new IllegalStateException("Game is already over");
     }
-    this.currentTurn = (this.currentTurn == PlayerPiece.BLACK) ? PlayerPiece.WHITE : PlayerPiece.BLACK;
+    this.currentTurn = (this.currentTurn == PlayerPiece.BLACK)
+            ? PlayerPiece.WHITE : PlayerPiece.BLACK;
     this.consecutivePasses += 1;
     for (ModelFeatures listeners: this.features) {
       listeners.yourTurn();

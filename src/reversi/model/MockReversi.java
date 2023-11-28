@@ -150,7 +150,8 @@ public class MockReversi implements ReadonlyReversi {
    * @throws IllegalStateException    If the game hasn't started.
    */
   @Override
-  public int getPlayerScore(PlayerPiece player) throws IllegalArgumentException, IllegalStateException {
+  public int getPlayerScore(PlayerPiece player)
+          throws IllegalArgumentException, IllegalStateException {
     return this.realModel.getPlayerScore(player);
   }
 
@@ -169,4 +170,4 @@ public class MockReversi implements ReadonlyReversi {
   public String getInvalidTranscript() {
     return this.invalid_moves.toString();
   }
-}
+  }

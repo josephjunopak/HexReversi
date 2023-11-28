@@ -56,7 +56,8 @@ public class CaptureMax implements ReversiStrategy {
    * @return  the depth of the next piece of the same color, or -1 if there is a gap or no piece of
    *          the same color.
    */
-  private int samePieceInDirection(PlayerPiece player, ReadonlyReversi model, Coord coord, int dir) {
+  private int samePieceInDirection(PlayerPiece player, ReadonlyReversi model,
+                                   Coord coord, int dir) {
     int depth = 1;
     int current_row = coord.row;
     int current_col = coord.col;

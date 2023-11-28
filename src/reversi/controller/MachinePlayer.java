@@ -66,10 +66,6 @@ public class MachinePlayer implements Player {
 
   @Override
   public String toString() {
-    return switch (this.piece) {
-      case BLACK -> "Black";
-      case WHITE -> "White";
-      default -> "";
-    };
+    return (this.piece == PlayerPiece.WHITE) ? "White" : "Black";
   }
 }
