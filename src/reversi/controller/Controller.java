@@ -17,6 +17,13 @@ public class Controller implements PlayerActions, ModelFeatures {
 
   private final Player player;
 
+  /**
+   * Constructor to create a Controller for Reversi.
+   *
+   * @param model Full model
+   * @param player Player that is controlled by this controller
+   * @param view GUI view
+   */
   public Controller(Reversi model, Player player, GUIView view) {
     this.model = model;
     this.view = view;
@@ -29,6 +36,9 @@ public class Controller implements PlayerActions, ModelFeatures {
     this.view.setTitle(this.player.toString());
   }
 
+  /**
+   * Handles the action of passing on a given turn.
+   */
   @Override
   public void passMove() {
     if (this.model.getCurrentPlayer() == this.player.getPiece()) {
@@ -47,6 +57,13 @@ public class Controller implements PlayerActions, ModelFeatures {
     this.view.refresh();
   }
 
+  /**
+   * Handles the action of playing a move on the board given the
+   * specified coordinates. If the tried move throws an exception,
+   * the view will give notify the user that an illegal move has tried to be played.
+   *
+   * @param coord The coordinates where the player has placed their piece.
+   */
   @Override
   public void playMove(Coord coord) {
     if (this.model.getCurrentPlayer() == this.player.getPiece()) {
@@ -68,6 +85,12 @@ public class Controller implements PlayerActions, ModelFeatures {
     this.view.refresh();
   }
 
+  /**
+   * Notifies the player that it is their turn to make a move.
+   * Once a player makes a move, it updates the view.
+   * In the case where the game is over, the view will show
+   * a prompt stating that the game is over.
+   */
   @Override
   public void yourTurn() {
     if (this.model.getCurrentPlayer() == this.player.getPiece()) {

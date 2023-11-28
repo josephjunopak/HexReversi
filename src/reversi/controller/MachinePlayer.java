@@ -9,6 +9,10 @@ import reversi.model.ReadonlyReversi;
 import reversi.strategy.ReversiStrategy;
 import reversi.view.PlayerActions;
 
+/**
+ * Represents a computer player in Reversi. It utilizes the given strategy
+ * to choose its interactions.
+ */
 public class MachinePlayer implements Player {
   private PlayerPiece piece;
 
@@ -17,6 +21,13 @@ public class MachinePlayer implements Player {
   private final List<PlayerActions> featuresListeners;
   private final ReversiStrategy strategy;
 
+  /**
+   * Constructs a machine player given a read-only version of the model and a game strategy
+   * for the computer to utilize in order to make its moves.
+   *
+   * @param model Read-only model
+   * @param strategy Game strategy
+   */
   public MachinePlayer(ReadonlyReversi model, ReversiStrategy strategy) {
     this.model = model;
     this.strategy = strategy;

@@ -540,10 +540,23 @@ public class HexReversi implements Reversi {
     }
   }
 
+  /**
+   * Adds a feature listener to the model, which will be notified when the game turn changes.
+   *
+   * @param features the listener which will be notified once the game turn changes.
+   */
   @Override
   public void addFeatures(ModelFeatures features) {
     this.features.add(features);
   }
+
+  /**
+   * Adds a player to the game, and assigns the player a piece. This method also ensures that there
+   * are a maximum of 2 players per game.
+   *
+   * @param player  The player which participates in this game.
+   * @throws IllegalStateException if the game already has 2 players.
+   */
 
   @Override
   public void addPlayer(Player player) throws IllegalStateException {

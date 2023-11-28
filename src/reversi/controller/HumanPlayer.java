@@ -7,6 +7,9 @@ import reversi.model.PlayerPiece;
 import reversi.model.ReadonlyReversi;
 import reversi.view.PlayerActions;
 
+/**
+ * Represents a human player in Reversi.
+ */
 public class HumanPlayer implements Player {
   private PlayerPiece piece;
 
@@ -14,10 +17,13 @@ public class HumanPlayer implements Player {
 
   private final List<PlayerActions> featuresListeners;
 
+  /**
+   * Constructs a human player given a read-only version of the model.
+   * @param model Read-only model
+   */
   public HumanPlayer(ReadonlyReversi model) {
     this.model = model;
     this.featuresListeners = new ArrayList<>();
-
   }
 
   @Override
