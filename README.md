@@ -106,3 +106,33 @@ of pieces. It also defaults to top-left cells when there are ties.
 - Added a stub GUI that can display the model but only supports selecting cells and has no
 interactions with the model yet.
 - Added JUnit testing for mockModel and maxCapture strategy.
+
+## Changes for Part 3
+
+- Added Features interfaces for both the model and controller to abstract higher-level usage
+- Renamed Players Enum to PlayerPiece Enum (Enum is delegated to black and white pieces in Reversi)
+- Created new Players interface in the controller package to handle Player actions
+  - Mainly used for the MachinePlayer, Human player doesn't do anything since inputs are taken from
+    the view.
+- Added two new methods to the Reversi interface: addFeatures() and addPlayer()
+  - addFeatures(): adds a model feature-listener to the model, which are notified whenever the turn
+    changes in the model.
+  - addPlayer() adds a player to the model, and is assigned a piece automatically.
+- Added a method to the ReadonlyReversi interface: getPiece(), which returns the piece assigned to
+  the given player.
+- Added two new features interfaces, which allow for the controller to be notified whenever certain
+  events occur in the view or model.
+  - ModelFeatures: 
+    - yourTurn(): notifies the controller whenever the turn changes in the model
+  - PlayerActions: (this is used by both the players and view interfaces)
+    - passMove(): notifies the controller whenever a player wants to pass their turn.
+    - playMove(): notifies the controller whenever a player wants to make a move.
+- Created Factory class for Players that allows for the creation of either:
+  - Human Player
+  - Computer Player w/ Strategy = CaptureMax (Capture the maximum number of pieces possible)
+- Main method now accepts CLI arguments. The first input binds the player to the black piece 
+ the second input (separated by a space) binds the player to the white piece.
+ the black player always goes first. Example inputs should be:
+    - "Human Human"
+    - "Human Capture_Max"
+- Removed the debug print statements from the view.

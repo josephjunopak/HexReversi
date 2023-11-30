@@ -27,8 +27,6 @@ Y
 )src/reversi/strategy/ReversiStrategy.java,3/8/3818a28e296028d291970a239c1edd6218530fbb
 T
 $src/reversi/strategy/CaptureMax.java,a/7/a7ec3cfae6f94b6702dc40fad7addc9c38eb3e8d
-M
-src/reversi/model/Player.java,8/7/87c351875b50cefc3494379b54f015a24a04029c
 R
 "src/reversi/model/MockReversi.java,9/9/99a9fec5a00cfef518b67507c3656e815b14f75d
 L

@@ -18,6 +18,7 @@ public class MockReversi implements ReadonlyReversi {
   /**
    * The constructor for the mock which takes in a real model of reversi to delegate method calls
    * to. It also instantiates the string-builders for valid and invalid moves.
+   *
    * @param model model real model with correct implementations
    */
   public MockReversi(HexReversi model) {
@@ -42,8 +43,7 @@ public class MockReversi implements ReadonlyReversi {
     if (this.realModel.isMoveLegal(player, coord)) {
       valid_moves.append(System.lineSeparator());
       valid_moves.append(coord.toString());
-    }
-    else {
+    } else {
       invalid_moves.append(System.lineSeparator());
       invalid_moves.append(coord.toString());
     }
@@ -170,4 +170,4 @@ public class MockReversi implements ReadonlyReversi {
   public String getInvalidTranscript() {
     return this.invalid_moves.toString();
   }
-  }
+}

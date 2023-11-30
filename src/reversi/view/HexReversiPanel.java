@@ -204,9 +204,6 @@ public class HexReversiPanel extends JPanel {
             actions.playMove(selectedCell);
           }
         }
-        else {
-          System.out.println("Please select a cell");
-        }
       }
       if (keyCode == KeyEvent.VK_P) {
         for (PlayerActions actions: featuresListeners) {
@@ -238,8 +235,6 @@ public class HexReversiPanel extends JPanel {
       else {
         selectedCell = cell_indices;
       }
-
-      System.out.println("Coordinates of cell:" + HexReversiPanel.this.selectedCell);
     }
 
     @Override

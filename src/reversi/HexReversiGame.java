@@ -35,7 +35,11 @@ public class HexReversiGame {
 
     Controller controller1 = new Controller(model, player1, viewPlayer1);
     Controller controller2 = new Controller(model, player2, viewPlayer2);
+
+    viewPlayer1.display(true);
+    viewPlayer2.display(true);
     model.startGame();
+
     viewPlayer1.display(true);
     viewPlayer2.display(true);
   }

@@ -17,6 +17,10 @@ public class Controller implements PlayerActions, ModelFeatures {
 
   private final Player player;
 
+  private boolean gameIsOver;
+
+  private static final String GAME_OVER_MSG = "Game is over.";
+
   /**
    * Constructor to create a Controller for Reversi.
    *
@@ -28,12 +32,13 @@ public class Controller implements PlayerActions, ModelFeatures {
     this.model = model;
     this.view = view;
     this.player = player;
-    model.addPlayer(player);
+    this.model.addPlayer(player);
     this.model.addFeatures(this);
     this.view.addFeatureListener(this);
     this.player.initializePiece();
     this.player.addListener(this);
     this.view.setTitle(this.player.toString());
+    gameIsOver = false;
   }
 
   /**
@@ -41,14 +46,17 @@ public class Controller implements PlayerActions, ModelFeatures {
    */
   @Override
   public void passMove() {
+    if (this.model.isGameOver()) {
+      view.showMessage(GAME_OVER_MSG);
+      return;
+    }
+
     if (this.model.getCurrentPlayer() == this.player.getPiece()) {
-      System.out.println("Turn passed");
       try {
         this.model.passTurn();
-        System.out.println("Turn passed");
       }
       catch (IllegalStateException e) {
-        view.showMessage("Game hasn't started");
+        view.showMessage("Game hasn't started.");
       }
     }
     else {
@@ -58,25 +66,28 @@ public class Controller implements PlayerActions, ModelFeatures {
   }
 
   /**
-   * Handles the action of playing a move on the board given the
-   * specified coordinates. If the tried move throws an exception,
+   * This method is called by the view when a player tries to place a piece on the board.
+   * Based on the specified coordinates. If the tried move throws an exception,
    * the view will give notify the user that an illegal move has tried to be played.
    *
    * @param coord The coordinates where the player has placed their piece.
    */
   @Override
   public void playMove(Coord coord) {
+    if (this.model.isGameOver()) {
+      view.showMessage(GAME_OVER_MSG);
+      return;
+    }
+
     if (this.model.getCurrentPlayer() == this.player.getPiece()) {
-      System.out.println("move made");
       try {
         this.model.makeMove(coord);
-        System.out.println("Move made");
       }
       catch (IllegalArgumentException e) {
-        view.showMessage("Illegal move for " + this.player.toString());
+        view.showMessage("Illegal move for " + this.player);
       }
       catch (IllegalStateException e) {
-        view.showMessage("Invalid move for " + this.player.toString());
+        view.showMessage("Invalid move for " + this.player);
       }
     }
     else {
@@ -93,12 +104,16 @@ public class Controller implements PlayerActions, ModelFeatures {
    */
   @Override
   public void yourTurn() {
-    if (this.model.getCurrentPlayer() == this.player.getPiece()) {
+    if (this.model.isGameOver()) {
+      if (!gameIsOver) {
+        view.showMessage(GAME_OVER_MSG);
+      }
+      gameIsOver = true;
+      return;
+    }
+    else if (this.model.getCurrentPlayer() == this.player.getPiece()) {
       player.requestMove();
     }
     this.view.refresh();
-    if (this.model.isGameOver()) {
-      view.showMessage("Game is over");
-    }
   }
 }

@@ -1,9 +1,9 @@
 
 a
-java:S1854%"?Remove this useless assignment to local variable "controller2".(¼–ö÷ÿÿÿÿÿ8£é¸¢Á1
+java:S1854%"?Remove this useless assignment to local variable "controller2".(¼–ö÷ÿÿÿÿÿ8ìÄ„‹Â1
 \
-java:S1854$"?Remove this useless assignment to local variable "controller1".(‚©¦ø8£é¸¢Á1
+java:S1854$"?Remove this useless assignment to local variable "controller1".(‚©¦ø8ìÄ„‹Â1
 M
-java:S1481$"0Remove this unused "controller1" local variable.(‚©¦ø8¨é¸¢Á1
+java:S1481$"0Remove this unused "controller1" local variable.(‚©¦ø8ïÄ„‹Â1
 R
-java:S1481%"0Remove this unused "controller2" local variable.(¼–ö÷ÿÿÿÿÿ8¨é¸¢Á1
+java:S1481%"0Remove this unused "controller2" local variable.(¼–ö÷ÿÿÿÿÿ8ïÄ„‹Â1
