@@ -4,8 +4,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.util.List;
 
-import cs3500.reversi.controller.PlayerListener;
-import cs3500.reversi.model.Disc;
+import reversi.provider.controller.PlayerListener;
+import reversi.provider.model.Disc;
 
 
 /**

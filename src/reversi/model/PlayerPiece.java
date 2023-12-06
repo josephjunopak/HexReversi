@@ -7,5 +7,5 @@ package reversi.model;
 public enum PlayerPiece {
   EMPTY,
   BLACK,
-  WHITE
+  WHITE;
 }

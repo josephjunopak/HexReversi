@@ -3,9 +3,9 @@ package reversi.provider.strategy;
 import java.util.ArrayList;
 import java.util.List;
 
-import cs3500.reversi.model.Disc;
-import cs3500.reversi.model.DiscType;
-import cs3500.reversi.model.ReadonlyReversiModel;
+import reversi.provider.model.Disc;
+import reversi.provider.model.DiscType;
+import reversi.provider.model.ReadonlyReversiModel;
 
 /**
  * Strategy that aims for corners pieces in the game.

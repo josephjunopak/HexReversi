@@ -1,9 +1,9 @@
 package reversi.provider.strategy;
 
-import cs3500.reversi.model.AIPlayer;
-import cs3500.reversi.model.HumanPlayer;
-import cs3500.reversi.model.Player;
-import cs3500.reversi.model.ReversiModel;
+import reversi.provider.model.AIPlayer;
+import reversi.provider.model.HumanPlayer;
+import reversi.provider.model.Player;
+import reversi.provider.model.ReversiModel;
 
 /**
  * Represents the types of game modes.

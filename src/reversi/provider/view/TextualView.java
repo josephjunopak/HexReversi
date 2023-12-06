@@ -2,8 +2,8 @@ package reversi.provider.view;
 
 import java.util.List;
 
-import cs3500.reversi.model.Disc;
-import cs3500.reversi.model.ReversiModel;
+import reversi.provider.model.Disc;
+import reversi.provider.model.ReversiModel;
 
 /**
  * A simple text-based rendering of the Reversi game.

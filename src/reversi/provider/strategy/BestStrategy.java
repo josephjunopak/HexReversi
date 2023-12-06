@@ -3,12 +3,12 @@ package reversi.provider.strategy;
 import java.util.ArrayList;
 import java.util.List;
 
-import cs3500.reversi.model.BasicReversi;
-import cs3500.reversi.model.Disc;
-import cs3500.reversi.model.DiscPosn;
-import cs3500.reversi.model.DiscType;
-import cs3500.reversi.model.ReadonlyReversiModel;
-import cs3500.reversi.model.ReversiModel;
+import reversi.provider.model.Disc;
+import reversi.model.Reversi;
+import reversi.provider.model.DiscPosn;
+import reversi.provider.model.DiscType;
+import reversi.provider.model.ReadonlyReversiModel;
+import reversi.provider.model.ReversiModel;
 
 /**
  * Strategy that finds the best move by using the minimax algorithm.

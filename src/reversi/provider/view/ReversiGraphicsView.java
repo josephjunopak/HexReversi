@@ -8,9 +8,9 @@ import java.util.List;
 
 import javax.swing.*;
 
-import cs3500.reversi.controller.PlayerListener;
-import cs3500.reversi.model.Disc;
-import cs3500.reversi.model.ReadonlyReversiModel;
+import reversi.provider.controller.PlayerListener;
+import reversi.provider.model.Disc;
+import reversi.model.ReadonlyReversi;
 
 /**
  * An implementation of {@link IView}
