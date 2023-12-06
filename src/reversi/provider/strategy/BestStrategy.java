@@ -15,11 +15,11 @@ import reversi.provider.model.ReversiModel;
  */
 public class BestStrategy implements MoveStrategy {
   @Override
-  public Disc chooseDisc(ReadonlyReversiModel model, DiscType player) {
+  public Disc chooseDisc(ReadonlyReversi model, DiscType player) {
     int bestValue = Integer.MIN_VALUE;
 
     List<List<Disc>> oldBoard = new ArrayList<>(model.getBoard());
-    ReversiModel mutableModel = new BasicReversi(model.getBoard(), player);
+    Reversi mutableModel = new HexReversi(model.getBoard(), player);
 
     Disc bestMove = mutableModel.allMovesLeft(player).get(0);
     for (Disc d : mutableModel.allMovesLeft(player)) {

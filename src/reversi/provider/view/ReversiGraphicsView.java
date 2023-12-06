@@ -18,7 +18,7 @@ import reversi.model.ReadonlyReversi;
  */
 public class ReversiGraphicsView extends JFrame implements IView {
   private ReversiPanel reversiPanel;
-  private ReadonlyReversiModel model;
+  private ReadonlyReversi model;
   private int width;
   private int height;
   private List<PlayerListener> listeners = new ArrayList<>();
@@ -29,7 +29,7 @@ public class ReversiGraphicsView extends JFrame implements IView {
    *
    * @param m model view is based on.
    */
-  public ReversiGraphicsView(ReadonlyReversiModel m) {
+  public ReversiGraphicsView(ReadonlyReversi m) {
     super();
     int bs = m.getBoardSize() + 1;
     this.width = (bs * 80);
