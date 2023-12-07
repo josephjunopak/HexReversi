@@ -15,27 +15,28 @@ import reversi.provider.model.ReversiModel;
  */
 public class BestStrategy implements MoveStrategy {
   @Override
-  public Disc chooseDisc(ReadonlyReversi model, DiscType player) {
-    int bestValue = Integer.MIN_VALUE;
-
-    List<List<Disc>> oldBoard = new ArrayList<>(model.getBoard());
-    Reversi mutableModel = new HexReversi(model.getBoard(), player);
-
-    Disc bestMove = mutableModel.allMovesLeft(player).get(0);
-    for (Disc d : mutableModel.allMovesLeft(player)) {
-      try {
-        mutableModel.flipDiscs(d);
-        int moveValue = minimax(mutableModel, 5, false, player);
-        mutableModel.newBoard(oldBoard);
-        if (moveValue > bestValue) {
-          bestMove = new Disc(DiscType.EMPTY, new DiscPosn(d.getQ(), d.getR(), d.getZ()));
-          bestValue = moveValue;
-        }
-      } catch (IllegalStateException e) {
-        // ignores invalid moves
-      }
-    }
-    return bestMove;
+  public Disc chooseDisc(ReadonlyReversiModel model, DiscType player) {
+//    int bestValue = Integer.MIN_VALUE;
+//
+//    List<List<Disc>> oldBoard = new ArrayList<>(model.getBoard());
+//    Reversi mutableModel = new HexReversi(model.getBoard(), player);
+//
+//    Disc bestMove = mutableModel.allMovesLeft(player).get(0);
+//    for (Disc d : mutableModel.allMovesLeft(player)) {
+//      try {
+//        mutableModel.flipDiscs(d);
+//        int moveValue = minimax(mutableModel, 5, false, player);
+//        mutableModel.newBoard(oldBoard);
+//        if (moveValue > bestValue) {
+//          bestMove = new Disc(DiscType.EMPTY, new DiscPosn(d.getQ(), d.getR(), d.getZ()));
+//          bestValue = moveValue;
+//        }
+//      } catch (IllegalStateException e) {
+//        // ignores invalid moves
+//      }
+//    }
+//    return bestMove;
+    return null;
   }
 
   /**
@@ -56,7 +57,7 @@ public class BestStrategy implements MoveStrategy {
     }
     if (model.allMovesLeft(DiscType.WHITE).isEmpty()
             && model.allMovesLeft(DiscType.BLACK).isEmpty()) {
-      if (model.getWinner().getPiece() == player) {
+      if (model.getWinner().getDiscPiece() == player) {
         return size;
       } else {
         return -1 * size;

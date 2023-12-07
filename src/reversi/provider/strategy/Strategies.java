@@ -1,9 +1,12 @@
 package reversi.provider.strategy;
 
-import reversi.provider.model.AIPlayer;
-import reversi.provider.model.HumanPlayer;
-import reversi.provider.model.Player;
+import reversi.provider.model.HumanProviderPlayerAdapter;
+import reversi.provider.model.MachineProviderPlayerAdapter;
+import reversi.provider.model.ProviderPlayer;
+import reversi.provider.model.ReadonlyModelAdapter;
+import reversi.provider.model.ReadonlyReversiModel;
 import reversi.provider.model.ReversiModel;
+import reversi.model.ReadonlyReversi;
 
 /**
  * Represents the types of game modes.
@@ -75,8 +78,8 @@ public enum Strategies {
    * @param strategy the strategy the user selects
    * @return the player
    */
-  public static Player createPlayer(Strategies strategy, ReversiModel model) {
-    Player p;
+  public static ProviderPlayer createPlayer(Strategies strategy, ReadonlyReversi model) {
+    ProviderPlayer p;
     switch (strategy) {
       case HUMAN:
         return new HumanPlayer(model);

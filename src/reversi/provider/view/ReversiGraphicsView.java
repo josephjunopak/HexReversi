@@ -10,7 +10,7 @@ import javax.swing.*;
 
 import reversi.provider.controller.PlayerListener;
 import reversi.provider.model.Disc;
-import reversi.model.ReadonlyReversi;
+import reversi.provider.model.ReadonlyReversiModel;
 
 /**
  * An implementation of {@link IView}
@@ -18,7 +18,7 @@ import reversi.model.ReadonlyReversi;
  */
 public class ReversiGraphicsView extends JFrame implements IView {
   private ReversiPanel reversiPanel;
-  private ReadonlyReversi model;
+  protected ReadonlyReversiModel model;
   private int width;
   private int height;
   private List<PlayerListener> listeners = new ArrayList<>();
@@ -29,7 +29,7 @@ public class ReversiGraphicsView extends JFrame implements IView {
    *
    * @param m model view is based on.
    */
-  public ReversiGraphicsView(ReadonlyReversi m) {
+  public ReversiGraphicsView(ReadonlyReversiModel m) {
     super();
     int bs = m.getBoardSize() + 1;
     this.width = (bs * 80);
@@ -37,6 +37,7 @@ public class ReversiGraphicsView extends JFrame implements IView {
     this.setTitle("Reversi");
     this.setSize(width, height);
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    this.model = m;
     this.reversiPanel = new ReversiPanel(m);
     this.reversiPanel.setPreferredSize(new Dimension(width, height));
     JScrollPane reversiPane = new JScrollPane(reversiPanel);

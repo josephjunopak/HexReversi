@@ -5,7 +5,7 @@ import reversi.provider.controller.IController;
 /**
  * Interface that represents the model for a player in the game of Reversi.
  */
-public interface Player {
+public interface ProviderPlayer {
 
   /**
    * Adds a controller to a player.
@@ -24,5 +24,5 @@ public interface Player {
    *
    * @return player's disc type.
    */
-  DiscType getPiece();
+  DiscType getDiscPiece();
 }

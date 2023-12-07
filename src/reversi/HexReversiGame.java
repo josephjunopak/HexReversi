@@ -2,6 +2,13 @@ package reversi;
 
 import reversi.model.HexReversi;
 import reversi.model.Reversi;
+import reversi.provider.model.ReadonlyModelAdapter;
+import reversi.provider.model.ReadonlyReversiModel;
+import reversi.provider.strategy.AvoidNearCorner;
+import reversi.provider.strategy.Strategies;
+import reversi.provider.view.IView;
+import reversi.provider.view.ReversiGraphicsView;
+import reversi.provider.view.ViewAdapter;
 import reversi.view.GUIView;
 import reversi.view.HexReversiGUIView;
 import reversi.controller.Player;
@@ -27,8 +34,11 @@ public class HexReversiGame {
     PlayerCreator.PlayerType playerType2 = PlayerCreator.PlayerType.valueOf(args[1].toUpperCase());
 
     Reversi model = new HexReversi(6);
+    model.startGame();
+    ReadonlyReversiModel adapter = new ReadonlyModelAdapter(model);
+    System.out.println(adapter.getBoardSize());
     GUIView viewPlayer1 = new HexReversiGUIView(model);
-    GUIView viewPlayer2 = new HexReversiGUIView(model);
+    GUIView viewPlayer2 = new ViewAdapter(adapter);
 
     Player player1 = PlayerCreator.create(model, playerType1);
     Player player2 = PlayerCreator.create(model, playerType2);

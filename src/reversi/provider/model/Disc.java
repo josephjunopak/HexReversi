@@ -1,14 +1,25 @@
 package reversi.provider.model;
 
 import reversi.model.Coord;
+import reversi.model.PlayerPiece;
 
 public class Disc implements IDisc {
-  DiscType type;
-  DiscPosn posn;
+  private final PlayerPiece piece;
+  private final Coord coord;
+
+  private final int boardHeight;
+  private final DiscPosn discPosn;
+
+  public Disc(Coord coord, PlayerPiece piece, int boardHeight) {
+    this.piece = piece;
+    this.coord = coord;
+    this.boardHeight = boardHeight;
+    this.discPosn = DiscConversion.toPosn(this.coord, this.boardHeight);
+  }
 
   @Override
   public DiscType getType() {
-    return type;
+    return DiscConversion.toDiscType(this.piece);
   }
 
   @Override
@@ -28,7 +39,7 @@ public class Disc implements IDisc {
 
   @Override
   public int getQ() {
-    return this.posn.getQ();
+    return this.discPosn.getQ();
   }
 
   @Override
@@ -41,4 +52,11 @@ public class Disc implements IDisc {
     return this.posn.getZ();
   }
 
+  public PlayerPiece getPiece() {
+    return this.piece;
+  }
+
+  public Coord getCoord() {
+    return this.coord;
+  }
 }

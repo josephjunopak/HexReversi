@@ -1,6 +1,7 @@
 package reversi.model;
 
 import java.util.List;
+import java.util.Map;
 
 import reversi.controller.Player;
 
@@ -52,6 +53,11 @@ public class MockReversi implements ReadonlyReversi {
 
   @Override
   public PlayerPiece getPiece(Player player) {
+    return null;
+  }
+
+  @Override
+  public Map<Player, PlayerPiece> getPlayerMap() {
     return null;
   }
 

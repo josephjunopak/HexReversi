@@ -14,7 +14,7 @@ public interface ReversiModel extends ReadonlyReversiModel {
    *
    * @param p player to add
    */
-  void addPlayer(Player p);
+  void addPlayer(ProviderPlayer p);
 
   /**
    * Adds ModelStatusListeners.

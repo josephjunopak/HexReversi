@@ -1,6 +1,7 @@
 package reversi.model;
 
 import java.util.List;
+import java.util.Map;
 
 import reversi.controller.Player;
 
@@ -99,4 +100,6 @@ public interface ReadonlyReversi {
    * @throws IllegalArgumentException if the player is not part of the game.
    */
   PlayerPiece getPiece(Player player) throws IllegalArgumentException;
+
+  Map<Player, PlayerPiece> getPlayerMap();
 }

@@ -90,7 +90,7 @@ public class ReversiPanel extends JPanel {
   public void winnerMessage(Graphics2D g2d) {
     String text = "";
     try {
-      DiscType winner = this.model.getWinner().getPiece();
+      DiscType winner = this.model.getWinner().getDiscPiece();
       if (winner == DiscType.BLACK) {
         g2d.setColor(Color.BLACK);
         text = "Player 1 Won!";

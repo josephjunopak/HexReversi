@@ -22,14 +22,14 @@ public interface ReadonlyReversiModel {
    *
    * @return player 1.
    */
-  Player getPlayer1();
+  ProviderPlayer getPlayer1();
 
   /**
    * Returns player 2.
    *
    * @return player 2.
    */
-  Player getPlayer2();
+  ProviderPlayer getPlayer2();
 
   /**
    * Returns the board's current state.
@@ -50,7 +50,7 @@ public interface ReadonlyReversiModel {
    *
    * @return the player with the most discs on the board
    */
-  Player getWinner();
+  ProviderPlayer getWinner();
 
   /**
    * Returns player one's score.

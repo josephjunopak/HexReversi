@@ -18,7 +18,11 @@ public class PlayerCreator {
    */
   public enum PlayerType {
     HUMAN,
-    CAPTURE_MAX
+    CAPTURE_MAX,
+    PROVIDER_AVOID_NEAR_CORNER,
+    PROVIDER_FIRST_OPENING,
+    PROVIDER_GET_MOST_PIECES,
+    PROVIDER_GO_FOR_CORNERS,
   }
 
   /**

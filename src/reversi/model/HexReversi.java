@@ -50,7 +50,7 @@ public class HexReversi implements Reversi {
 
   private final List<ModelFeatures> features;
 
-  private Map<Player, PlayerPiece> playerMap;
+  protected Map<Player, PlayerPiece> playerMap;
 
   /**
    * Constructor for HexReversi. The board is initialized to the hexagon grid.
