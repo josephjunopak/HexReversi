@@ -36,13 +36,15 @@ public class HexReversi implements Reversi {
   // 0-th arraylist inside cellGrid is the top row
   // 0-th element of an arrayList (row), is the most left cell
   private List<List<PlayerPiece>> cellGrid;
-  
+
   // True is game is started
   // False is game not yet started
   private boolean gameStarted;
-  
+
   // States which player's turn it is
-  /** invariant * : currentTurn is never EMPTY. */
+  /**
+   * invariant * : currentTurn is never EMPTY.
+   */
   private PlayerPiece currentTurn;
 
   // true if the last player passed their turn.
@@ -54,6 +56,7 @@ public class HexReversi implements Reversi {
 
   /**
    * Constructor for HexReversi. The board is initialized to the hexagon grid.
+   *
    * @param boardSize The length of an edge of the board to set to.
    */
   public HexReversi(int boardSize) {
@@ -80,11 +83,11 @@ public class HexReversi implements Reversi {
   /**
    * Continues game based on the given state of the another board and the current player.
    *
-   * @param currentBoard board to continue game from
+   * @param currentBoard  board to continue game from
    * @param currentPlayer current player that is up to make a move
    * @throws IllegalArgumentException if the provided player is EMPTY or null, or if the
    *                                  current board is invalid.
-   * @throws IllegalStateException  if the game has already started
+   * @throws IllegalStateException    if the game has already started
    */
   public void continueGame(List<List<PlayerPiece>> currentBoard, PlayerPiece currentPlayer)
           throws IllegalArgumentException {
@@ -110,7 +113,7 @@ public class HexReversi implements Reversi {
     }
     int boardSize = (currentBoard.size() + 1) / 2;
 
-    for (int row = 0; row < currentBoard.get(0).size(); row ++) {
+    for (int row = 0; row < currentBoard.get(0).size(); row++) {
       if (currentBoard.get(row).size() != currentBoard.size() - Math.abs(row - boardSize + 1)) {
         throw new IllegalArgumentException("Invalid board size");
       }
@@ -130,7 +133,7 @@ public class HexReversi implements Reversi {
    * is called before startGame().
    *
    * @throws IllegalArgumentException if board size is invalid
-   * @throws IllegalStateException if game has already started
+   * @throws IllegalStateException    if game has already started
    */
   @Override
   public void startGame() throws IllegalArgumentException, IllegalStateException {
@@ -145,7 +148,7 @@ public class HexReversi implements Reversi {
 
     //Black player moves first
     this.currentTurn = PlayerPiece.BLACK;
-    for (ModelFeatures listeners: this.features) {
+    for (ModelFeatures listeners : this.features) {
       listeners.yourTurn();
     }
   }
@@ -201,12 +204,12 @@ public class HexReversi implements Reversi {
   /**
    * Gives the depth of the next piece of the same color of the player in a certain direction.
    *
-   * @param player  The color of the pieces being checked for.
-   * @param coord   the coordinates containing information of the row and col
-   * @param dir     a number representing the direction with 0 representing directly left
-   *                and subsequent numbers rotating clockwise.
-   * @return  the depth of the next piece of the same color, or -1 if there is a gap or no piece of
-   *          the same color.
+   * @param player The color of the pieces being checked for.
+   * @param coord  the coordinates containing information of the row and col
+   * @param dir    a number representing the direction with 0 representing directly left
+   *               and subsequent numbers rotating clockwise.
+   * @return the depth of the next piece of the same color, or -1 if there is a gap or no piece of
+   * the same color.
    */
   private int samePieceInDirection(PlayerPiece player, Coord coord, int dir) {
     int depth = 1;
@@ -252,8 +255,7 @@ public class HexReversi implements Reversi {
       PlayerPiece player_at_cell;
       try {
         player_at_cell = this.getPlayerAtCell(Coord.coordAt(current_row, current_col));
-      }
-      catch (IllegalArgumentException e) {
+      } catch (IllegalArgumentException e) {
         return -1;
       }
       if (player_at_cell == PlayerPiece.EMPTY) {
@@ -272,7 +274,7 @@ public class HexReversi implements Reversi {
    * is defined as a move that must flip at least one opponent's piece.
    *
    * @param player the player that wants to place the piece
-   * @param coord Location on the grid to check
+   * @param coord  Location on the grid to check
    * @return True if the given coord is a legal move for the given player
    */
   public boolean isMoveLegal(PlayerPiece player, Coord coord) {
@@ -353,14 +355,14 @@ public class HexReversi implements Reversi {
    * The invariant that the currentPlayer is not EMPTY is maintained because it can only be set to
    * either BLACK or WHITE in this method.
    *
-   * @param coord   The coordinates containing information of the row and col.
-   *                The row is the top-down oriented row the 0th row is the 1st row.
-   *                The col is the left-right oriented column
-   *                where the 0th col is the left-most cell.
-   * @throws IllegalStateException if the game hasn't started yet
+   * @param coord The coordinates containing information of the row and col.
+   *              The row is the top-down oriented row the 0th row is the 1st row.
+   *              The col is the left-right oriented column
+   *              where the 0th col is the left-most cell.
+   * @throws IllegalStateException    if the game hasn't started yet
    * @throws IllegalArgumentException if the row or column is invalid
-   * @throws IllegalStateException if there have already been two consecutive passes
-   *                               (the game already ended)
+   * @throws IllegalStateException    if there have already been two consecutive passes
+   *                                  (the game already ended)
    */
   @Override
   public void makeMove(Coord coord) throws IllegalArgumentException, IllegalStateException {
@@ -387,7 +389,7 @@ public class HexReversi implements Reversi {
     this.currentTurn = (this.currentTurn == PlayerPiece.BLACK)
             ? PlayerPiece.WHITE : PlayerPiece.BLACK;
     this.consecutivePasses = 0;
-    for (ModelFeatures listeners: this.features) {
+    for (ModelFeatures listeners : this.features) {
       listeners.yourTurn();
     }
   }
@@ -407,12 +409,12 @@ public class HexReversi implements Reversi {
   /**
    * Returns the player occupying the cell or if the cell is empty.
    *
-   * @param coord   The coordinates containing information of the row and col.
-   *                The row is the top-down oriented row the 0th row is the 1st row.
-   *                The col is the left-right oriented column
-   *                where the 0th col is the left-most cell.
+   * @param coord The coordinates containing information of the row and col.
+   *              The row is the top-down oriented row the 0th row is the 1st row.
+   *              The col is the left-right oriented column
+   *              where the 0th col is the left-most cell.
    * @return The player in the cell or if the cell is empty at the given coordinates.
-   * @throws IllegalStateException if the game hasn't started yet
+   * @throws IllegalStateException    if the game hasn't started yet
    * @throws IllegalArgumentException if the row or column is invalid
    */
   @Override
@@ -427,12 +429,12 @@ public class HexReversi implements Reversi {
   /**
    * Returns whether the cell at the given row and column is empty or not.
    *
-   * @param coord   The coordinates containing information of the row and col.
-   *                The row is the top-down oriented row the 0th row is the 1st row.
-   *                The col is the left-right oriented column
-   *                where the 0th col is the left-most cell.
+   * @param coord The coordinates containing information of the row and col.
+   *              The row is the top-down oriented row the 0th row is the 1st row.
+   *              The col is the left-right oriented column
+   *              where the 0th col is the left-most cell.
    * @return true if the cell at the given coordinates is empty or false if it is occupied.
-   * @throws IllegalStateException if the game hasn't started yet
+   * @throws IllegalStateException    if the game hasn't started yet
    * @throws IllegalArgumentException if the row or column is invalid
    */
   @Override
@@ -479,7 +481,7 @@ public class HexReversi implements Reversi {
   /**
    * Gives the number of rows in the board.
    *
-   * @return  the number of rows in the cell grid.
+   * @return the number of rows in the cell grid.
    * @throws IllegalStateException if the game hasn't started yet
    */
   @Override
@@ -538,7 +540,7 @@ public class HexReversi implements Reversi {
     this.currentTurn = (this.currentTurn == PlayerPiece.BLACK)
             ? PlayerPiece.WHITE : PlayerPiece.BLACK;
     this.consecutivePasses += 1;
-    for (ModelFeatures listeners: this.features) {
+    for (ModelFeatures listeners : this.features) {
       listeners.yourTurn();
     }
   }
@@ -557,7 +559,7 @@ public class HexReversi implements Reversi {
    * Adds a player to the game, and assigns the player a piece. This method also ensures that there
    * are a maximum of 2 players per game.
    *
-   * @param player  The player which participates in this game.
+   * @param player The player which participates in this game.
    * @throws IllegalStateException if the game already has 2 players.
    */
 
@@ -565,12 +567,20 @@ public class HexReversi implements Reversi {
   public void addPlayer(Player player) throws IllegalStateException {
     if (this.playerMap.isEmpty()) {
       this.playerMap.put(Objects.requireNonNull(player), PlayerPiece.BLACK);
-    }
-    else if (this.playerMap.size() == 1) {
+    } else if (this.playerMap.size() == 1) {
       this.playerMap.put(Objects.requireNonNull(player), PlayerPiece.WHITE);
-    }
-    else {
+    } else {
       throw new IllegalStateException("Game is already full.");
     }
   }
+
+  @Override
+  public Map<Player, PlayerPiece> getPlayerMap() throws IllegalStateException {
+    if (this.playerMap.isEmpty()) {
+      throw new IllegalStateException("There are no players yet");
+    }
+
+    return new HashMap<Player, PlayerPiece>(this.playerMap);
+  }
+
 }

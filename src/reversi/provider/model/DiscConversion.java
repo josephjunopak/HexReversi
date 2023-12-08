@@ -1,6 +1,7 @@
 package reversi.provider.model;
 
 import reversi.model.Coord;
+import reversi.model.PlayerPiece;
 
 public class DiscConversion {
   public static Coord toCoord(IDisc disc, int boardHeight) {

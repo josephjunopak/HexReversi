@@ -51,13 +51,6 @@ public class DiscPosn {
     return this.z;
   }
 
-  public Coord toCoord(int boardHeight) {
-    int offset = (boardHeight + 1) / 2;
-    int row = this.r + offset;
-    int col = (this.r > 0) ? this.q + offset : offset - this.z;
-    return Coord.coordAt(row, col);
-  }
-
   @Override
   public String toString() {
     return "(" + this.q + ", " + this.r + ", " + this.z + ")";

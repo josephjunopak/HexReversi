@@ -82,17 +82,22 @@ public enum Strategies {
     ProviderPlayer p;
     switch (strategy) {
       case HUMAN:
-        return new HumanPlayer(model);
+        return new HumanProviderPlayerAdapter(model);
       case GETFIRSTAVAILABLE:
-        return new AIPlayer(model, new FirstOpening());
+        return new MachineProviderPlayerAdapter(model,
+                new StrategyAdapter((ReadonlyModelAdapter) model, new FirstOpening()));
       case MOSTDISCS:
-        return new AIPlayer(model, new GetMostPieces());
+        return new MachineProviderPlayerAdapter(model,
+                new StrategyAdapter((ReadonlyModelAdapter) model, new GetMostPieces()));
       case CORNERS:
-        return new AIPlayer(model, new GoForCorners());
+        return new MachineProviderPlayerAdapter(model,
+                new StrategyAdapter((ReadonlyModelAdapter) model, new GoForCorners()));
       case AVOIDCORNERS:
-        return new AIPlayer(model, new AvoidNearCorner());
+        return new MachineProviderPlayerAdapter(model,
+                new StrategyAdapter((ReadonlyModelAdapter) model, new AvoidNearCorner()));
       case MAXMIN:
-        return new AIPlayer(model, new BestStrategy());
+        return new MachineProviderPlayerAdapter(model,
+                new StrategyAdapter((ReadonlyModelAdapter) model, new BestStrategy()));
       default:
         throw new IllegalArgumentException("Unsupported strategy type");
     }

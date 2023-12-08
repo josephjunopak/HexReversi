@@ -3,7 +3,17 @@ package reversi;
 import reversi.controller.HumanPlayer;
 import reversi.controller.MachinePlayer;
 import reversi.controller.Player;
+import reversi.model.ReadonlyReversi;
 import reversi.model.Reversi;
+import reversi.provider.model.MachineProviderPlayerAdapter;
+import reversi.provider.model.ReadonlyModelAdapter;
+import reversi.provider.model.ReadonlyReversiModel;
+import reversi.provider.strategy.AvoidNearCorner;
+import reversi.provider.strategy.BestStrategy;
+import reversi.provider.strategy.FirstOpening;
+import reversi.provider.strategy.GetMostPieces;
+import reversi.provider.strategy.GoForCorners;
+import reversi.provider.strategy.StrategyAdapter;
 import reversi.strategy.CaptureMax;
 
 /**
@@ -32,12 +42,25 @@ public class PlayerCreator {
    * @param type The type of player to be created
    * @return Instance of a player given the PlayerType
    */
-  public static Player create(Reversi model, PlayerType type) {
+  public static Player create(ReadonlyReversi model, PlayerType type) {
+    ReadonlyReversiModel providerModel = new ReadonlyModelAdapter(model);
     switch (type) {
       case HUMAN:
         return new HumanPlayer(model);
       case CAPTURE_MAX:
         return new MachinePlayer(model, new CaptureMax());
+      case PROVIDER_FIRST_OPENING:
+        return new MachineProviderPlayerAdapter(model,
+                new StrategyAdapter(providerModel, new FirstOpening()));
+      case PROVIDER_AVOID_NEAR_CORNER:
+        return new MachineProviderPlayerAdapter(model,
+              new StrategyAdapter(providerModel, new AvoidNearCorner()));
+      case PROVIDER_GET_MOST_PIECES:
+        return new MachineProviderPlayerAdapter(model,
+                new StrategyAdapter(providerModel, new GetMostPieces()));
+      case PROVIDER_GO_FOR_CORNERS:
+        return new MachineProviderPlayerAdapter(model,
+                new StrategyAdapter(providerModel, new GoForCorners()));
       default:
         throw new IllegalArgumentException("Invalid PlayerType");
     }

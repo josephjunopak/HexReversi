@@ -24,7 +24,7 @@ public class Disc implements IDisc {
 
   @Override
   public DiscPosn getPosn() {
-    return posn;
+    return this.discPosn;
   }
 
   @Override
@@ -44,12 +44,12 @@ public class Disc implements IDisc {
 
   @Override
   public int getR() {
-    return this.posn.getR();
+    return this.discPosn.getR();
   }
 
   @Override
   public int getZ() {
-    return this.posn.getZ();
+    return this.discPosn.getZ();
   }
 
   public PlayerPiece getPiece() {

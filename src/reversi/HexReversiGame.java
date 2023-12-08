@@ -48,7 +48,7 @@ public class HexReversiGame {
 
     viewPlayer1.display(true);
     viewPlayer2.display(true);
-    model.startGame();
+    //model.startGame();
 
     viewPlayer1.display(true);
     viewPlayer2.display(true);
