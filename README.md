@@ -9,7 +9,17 @@ we have implemented a game of HexReversi using the interface.
 
 
 ## Quick Start
-Run .jar file
+Run HexReversi.jar by inputting into the console:
+
+Player vs Player:
+```
+$ java -jar HexReversi.jar human human
+```
+
+Player vs Computer:
+```
+$ java -jar HexReversi.jar human capture_max
+```
 
 ## Changes
 
